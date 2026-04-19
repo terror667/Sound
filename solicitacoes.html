@@ -5,204 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOᑌᘉᗞ | Solicitar</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <style>
-:root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255,255,255,0.05); }
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-
 body {
-  background: radial-gradient(circle at bottom right, #0d2b3a, var(--bg-dark));
-  color:white; display:flex; min-height:100vh;
+  background: #050a10;
+  color: white;
+  font-family: Arial;
+  text-align: center;
 }
 
-.sidebar {
-  width:260px; background:rgba(0,0,0,0.85);
-  padding:40px 25px;
+input {
+  padding: 12px;
+  width: 300px;
+  margin: 20px;
+  border-radius: 10px;
+  border: none;
 }
 
-.nav-links li {
-  list-style:none; padding:15px; border-radius:12px;
-  cursor:pointer; color:#94a3b8;
+.card {
+  background: #111;
+  padding: 20px;
+  margin: 10px auto;
+  width: 250px;
+  border-radius: 15px;
 }
 
-.nav-links li.active {
-  background:var(--card-bg);
-  color:var(--primary);
-}
-
-.main { flex:1; padding:40px; }
-
-.search-input {
-  width:100%; max-width:600px;
-  padding:18px; border-radius:35px;
-  border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.05);
-  color:white; margin-bottom:30px;
-}
-
-.results-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:20px;
-}
-
-.spotify-card {
-  background:var(--card-bg);
-  padding:15px;
-  border-radius:20px;
-  text-align:center;
-}
-
-.btn-request {
-  background:var(--primary);
-  border:none;
-  padding:10px;
-  border-radius:12px;
-  font-weight:800;
-  cursor:pointer;
-  width:100%;
-  margin-top:8px;
-}
-
-#modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.9);
-  justify-content:center;
-  align-items:center;
-}
-
-.modal-box {
-  background:#0a0f14;
-  padding:35px;
-  border-radius:30px;
-  width:90%;
-  max-width:400px;
-  text-align:center;
-}
-
-.modal-box input {
-  width:100%;
-  padding:15px;
-  margin:20px 0;
-  border-radius:12px;
-  border:1px solid #333;
-  background:#111;
-  color:white;
+button {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #00d4ff;
+  cursor: pointer;
+  width: 100%;
 }
 </style>
 </head>
 
 <body>
 
-<aside class="sidebar">
-<h2 style="text-align:center;color:var(--primary);">SOᑌᘉᗞ</h2>
-<ul class="nav-links">
-<li onclick="location.href='pagina1.html'">🏠 Início</li>
-<li onclick="location.href='pagina2.html'">📂 Biblioteca</li>
-<li class="active">🔍 Solicitar</li>
-</ul>
-</aside>
-
-<main class="main">
 <h1>Buscar Música</h1>
 
-<input type="text" id="query" class="search-input" placeholder="Digite o nome..." onkeyup="buscar()">
+<input type="text" id="pesquisa" placeholder="Digite qualquer música..." onkeyup="buscar()">
 
-<div id="results" class="results-grid"></div>
-</main>
+<div id="lista"></div>
 
-<div id="modal">
-<div class="modal-box">
-<h3 id="displaySong"></h3>
-<input type="email" id="userEmail" placeholder="seu@email.com">
-<button id="sendBtn" class="btn-request" onclick="sendRequest()">Enviar</button>
-<button onclick="closeModal()" style="background:none;border:none;color:#999;">Cancelar</button>
-</div>
+<!-- MODAL -->
+<div id="modal" style="display:none;">
+  <h3 id="nomeMusica"></h3>
+  <input type="email" id="email" placeholder="seu@email.com">
+  <button onclick="enviar()">Enviar Pedido</button>
+  <button onclick="fechar()">Cancelar</button>
 </div>
 
 <script>
 (function(){ emailjs.init("Z1mNDpBSBEuhfpaF"); })();
 
-// 🎵 SUAS MUSICAS
-const musicas = [
-  { nome:"Yeshua", artista:"Gabriela Rocha", arquivo:"musicas/yeshua.mp3" },
-  { nome:"É Ele", artista:"Isadora Pompeo", arquivo:"musicas/ele.mp3" }
-];
+let audio = null;
+let musicaAtual = "";
 
-let audioAtual = null;
+// 🔍 BUSCA QUALQUER MÚSICA (DEEZER)
+async function buscar(){
+  const valor = document.getElementById("pesquisa").value;
 
-// 🔍 BUSCA LOCAL
-function buscar() {
-  const q = document.getElementById("query").value.toLowerCase();
-  const results = document.getElementById("results");
+  if(valor.length < 2) return;
 
-  results.innerHTML = "";
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "Carregando...";
 
-  musicas.filter(m =>
-    m.nome.toLowerCase().includes(q)
-  ).forEach(m => {
+  const res = await fetch(`https://api.deezer.com/search?q=${valor}`);
+  const data = await res.json();
 
-    results.innerHTML += `
-    <div class="spotify-card">
-      <h4>${m.nome}</h4>
-      <p>${m.artista}</p>
+  lista.innerHTML = "";
 
-      <button class="btn-request" onclick="play('${m.arquivo}')">
-        ▶️ Ouvir 30s
-      </button>
+  data.data.slice(0,10).forEach(m => {
 
-      <button class="btn-request" onclick="openModal('${m.nome} - ${m.artista}')">
-        Solicitar
-      </button>
-    </div>`;
+    lista.innerHTML += `
+      <div class="card">
+        <img src="${m.album.cover_medium}" width="100%">
+        <h3>${m.title}</h3>
+        <p>${m.artist.name}</p>
+
+        <button onclick="play('${m.preview}')">▶️ Ouvir 30s</button>
+        <button onclick="abrir('${m.title} - ${m.artist.name}')">Solicitar</button>
+      </div>
+    `;
   });
 }
 
-// ▶️ PLAYER 30s
-function play(src) {
-  if(audioAtual) audioAtual.pause();
+// ▶️ PREVIEW REAL (30s)
+function play(url){
+  if(audio) audio.pause();
 
-  audioAtual = new Audio(src);
-  audioAtual.play();
-
-  setTimeout(() => {
-    audioAtual.pause();
-    audioAtual.currentTime = 0;
-  }, 30000);
+  audio = new Audio(url);
+  audio.play();
 }
 
 // 📩 MODAL
-let curSong = "";
-
-function openModal(s){
-  curSong = s;
-  document.getElementById("displaySong").innerText = s;
-  document.getElementById("modal").style.display = "flex";
+function abrir(nome){
+  musicaAtual = nome;
+  document.getElementById("nomeMusica").innerText = nome;
+  document.getElementById("modal").style.display = "block";
 }
 
-function closeModal(){
+function fechar(){
   document.getElementById("modal").style.display = "none";
 }
 
 // 📧 EMAIL
-function sendRequest(){
-  const email = document.getElementById("userEmail").value;
+function enviar(){
+  const email = document.getElementById("email").value;
 
-  if(!email.includes("@")) {
+  if(!email.includes("@")){
     alert("Email inválido");
     return;
   }
 
-  emailjs.send('service_k5ft1lw','template_bti0wvb',{
-    musica: curSong,
+  emailjs.send("service_k5ft1lw","template_bti0wvb",{
+    musica: musicaAtual,
     email: email
   }).then(() => {
     alert("Pedido enviado 🚀");
-    location.href="pagina1.html";
   });
 }
 </script>
