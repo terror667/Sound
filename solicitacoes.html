@@ -36,7 +36,7 @@
 </aside>
 <main class="main">
     <h1>Buscar no Spotify</h1>
-    <input type="text" id="query" class="search-input" placeholder="O que você quer ouvir?" onkeyup="searchSpotify()">
+    <input type="text" id="query" class="search-input" placeholder="Digite o nome da música..." onkeyup="searchSpotify()">
     <div id="results" class="results-grid"></div>
 </main>
 <div id="modal">
@@ -49,50 +49,71 @@
 </div>
 <script>
     (function(){ emailjs.init("Z1mNDpBSBEuhfpaF"); })();
+    
     const clientId = 'b9c738e0a6ae4a26b4e451106c4a4b8f';
     const clientSecret = 'cf1e22369b9b4101859f58fd5cd1841d';
     let spotifyToken = '';
 
+    // Pega o Token do Spotify (Corrigido para HTTPS)
     async function getToken() {
-        const response = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret) },
-            body: 'grant_type=client_credentials'
-        });
-        const data = await response.json();
-        spotifyToken = data.access_token;
+        try {
+            const response = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+                },
+                body: 'grant_type=client_credentials'
+            });
+            const data = await response.json();
+            spotifyToken = data.access_token;
+        } catch (e) { console.error("Erro ao autenticar Spotify", e); }
     }
 
     async function searchSpotify() {
         const q = document.getElementById('query').value;
         if (q.length < 3) return;
         if (!spotifyToken) await getToken();
-        const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=12`, {
-            headers: { 'Authorization': 'Bearer ' + spotifyToken }
-        });
-        const data = await response.json();
-        const results = document.getElementById('results');
-        results.innerHTML = '';
-        data.tracks.items.forEach(track => {
-            results.innerHTML += `
-                <div class="spotify-card">
-                    <img src="${track.album.images[0].url}">
-                    <h4>${track.name}</h4>
-                    <p>${track.artists[0].name}</p>
-                    <button class="btn-request" onclick="openModal('${track.name.replace(/'/g, "")} - ${track.artists[0].name.replace(/'/g, "")}')">Solicitar</button>
-                </div>`;
-        });
+
+        try {
+            const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=12`, {
+                headers: { 'Authorization': 'Bearer ' + spotifyToken }
+            });
+            const data = await response.json();
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+
+            data.tracks.items.forEach(track => {
+                const song = track.name.replace(/'/g, "");
+                const artist = track.artists[0].name.replace(/'/g, "");
+                results.innerHTML += `
+                    <div class="spotify-card">
+                        <img src="${track.album.images[0].url}">
+                        <h4>${track.name}</h4>
+                        <p>${track.artists[0].name}</p>
+                        <button class="btn-request" onclick="openModal('${song} - ${artist}')">Solicitar</button>
+                    </div>`;
+            });
+        } catch (e) { console.error("Erro na busca", e); }
     }
 
     let curSong = "";
     function openModal(s) { curSong = s; document.getElementById('displaySong').innerText = s; document.getElementById('modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    
     function sendRequest() {
         const email = document.getElementById('userEmail').value;
         if(!email.includes('@')) return alert("E-mail inválido!");
         document.getElementById('sendBtn').innerText = "Enviando...";
+        
         emailjs.send('service_k5ft1lw', 'template_bti0wvb', { musica: curSong, email: email })
-            .then(() => { alert("Sucesso! O Luan recebeu seu pedido."); location.href = 'pagina1.html'; }, () => { alert("Erro ao enviar!"); document.getElementById('sendBtn').innerText = "Tentar novamente"; });
+            .then(() => { 
+                alert("Pedido enviado! O Luan recebeu seu pedido."); 
+                location.href = 'pagina1.html'; 
+            }, (err) => { 
+                alert("Erro ao enviar! Confira se o Service ID está correto no EmailJS."); 
+                document.getElementById('sendBtn').innerText = "Tentar novamente";
+            });
     }
 </script>
 </body>
