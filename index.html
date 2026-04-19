@@ -7,43 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00d4ff; --bg-dark: #050a10; --glass: rgba(15, 25, 35, 0.98); --primary-glow: rgba(0, 212, 255, 0.4); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body, html { width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; color: white; }
         #content-frame { width: 100%; height: 100%; border: none; padding-bottom: 110px; }
-
-        .player {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: var(--glass); backdrop-filter: blur(30px);
-            padding: 15px 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; align-items: center; justify-content: space-between; z-index: 9999;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-
+        .player { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--glass); backdrop-filter: blur(30px); padding: 15px 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; z-index: 9999; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
         .track-info { display: flex; align-items: center; gap: 15px; min-width: 200px; }
         #cover { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #111; }
         .track-text h3 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
-
         .controls { flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 20px; }
         .control-btns { display: flex; align-items: center; gap: 25px; margin-bottom: 10px; }
-        .btn-svg { background: transparent; border: none; cursor: pointer; fill: #fff; transition: 0.2s; display: flex; align-items: center; }
+        .btn-svg { background: transparent; border: none; cursor: pointer; fill: #fff; display: flex; align-items: center; }
         .play-btn-circle { width: 50px; height: 50px; background: #fff; border-radius: 50%; fill: #000 !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary-glow); }
-
         .progress-area { width: 100%; display: flex; align-items: center; gap: 12px; font-size: 11px; color: #888; }
         .custom-bar { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; }
         .fill { width: 0%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-
         .vol-container { position: relative; display: flex; align-items: center; justify-content: flex-end; width: 150px; }
         .vol-pop { position: absolute; bottom: 60px; right: 0; background: var(--glass); padding: 15px 10px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: none; flex-direction: column; align-items: center; animation: slideUp 0.3s ease; }
         .vol-pop.show { display: flex; }
         .vol-pop input { -webkit-appearance: slider-vertical; width: 5px; height: 100px; accent-color: var(--primary); }
-
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) {
-            .player { left: 10px; right: 10px; bottom: 10px; flex-direction: column; padding: 15px; border-radius: 25px; }
-            .track-info { min-width: 100%; margin-bottom: 12px; }
-            .vol-container { position: absolute; top: 15px; right: 20px; width: auto; }
-            .controls { width: 100%; margin: 0; }
-        }
+        @media (max-width: 850px) { .player { left: 10px; right: 10px; bottom: 10px; flex-direction: column; padding: 15px; border-radius: 25px; } .track-info { min-width: 100%; margin-bottom: 12px; } .vol-container { position: absolute; top: 15px; right: 20px; width: auto; } .controls { width: 100%; margin: 0; } }
     </style>
 </head>
 <body>
@@ -51,10 +34,7 @@
     <div class="player">
         <div class="track-info">
             <img id="cover" src="https://via.placeholder.com/50/111/00d4ff?text=SOᑌᘉᗞ" alt="">
-            <div class="track-text">
-                <h3 id="now">Aguardando...</h3>
-                <p id="status" style="font-size: 11px; color: var(--primary); font-weight: 600;">READY</p>
-            </div>
+            <div class="track-text"><h3 id="now">Aguardando...</h3><p id="status" style="font-size: 11px; color: var(--primary); font-weight: 600;">READY</p></div>
         </div>
         <div class="controls">
             <div class="control-btns">
@@ -62,11 +42,7 @@
                 <button class="btn-svg play-btn-circle" onclick="toggle()"><svg id="playIcon" width="26" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
                 <button class="btn-svg" onclick="next()"><svg width="22" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
             </div>
-            <div class="progress-area">
-                <span id="current">0:00</span>
-                <div class="custom-bar" onclick="seek(event)"><div class="fill" id="bar-fill"></div></div>
-                <span id="duration">0:00</span>
-            </div>
+            <div class="progress-area"><span id="current">0:00</span><div class="custom-bar" onclick="seek(event)"><div class="fill" id="bar-fill"></div></div><span id="duration">0:00</span></div>
         </div>
         <div class="vol-container">
             <div class="vol-pop" id="volPop"><input type="range" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)"></div>
@@ -75,21 +51,7 @@
     </div>
     <audio id="audio"></audio>
     <script>
-        const playlist = [
-            {name:"A Promessa", img:"imagens/imagem1.jpg", src:"musicas/musica1.mp3"},
-            {name:"Se Hoje Me Tocas", img:"imagens/imagem2.jpg", src:"musicas/musica2.mp3"},
-            {name:"Tu Que Habitas no Jardim", img:"imagens/imagem3.jpg", src:"musicas/musica3.mp3"},
-            {name:"É ele", img:"imagens/imagem4.jpg", src:"musicas/musica4.mp3"},
-            {name:"Yeshua", img:"imagens/imagem5.jpg", src:"musicas/musica5.mp3"},
-            {name:"Não mais escravos", img:"imagens/imagem6.jpg", src:"musicas/musica6.mp3"},
-            {name:"Me ama", img:"imagens/imagem7.jpg", src:"musicas/musica7.mp3"},
-            {name:"Mesmo sem entender", img:"imagens/imagem8.jpg", src:"musicas/musica8.mp3"},
-            {name:"Quando o mundo cai ao meu redor", img:"imagens/imagem9.jpg", src:"musicas/musica9.mp3"},
-            {name:"Me leva pra casa", img:"imagens/imagem10.jpg", src:"musicas/musica10.mp3"},
-            {name:"Uma nova história", img:"imagens/imagem11.jpg", src:"musicas/musica11.mp3"},
-            {name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg", src:"musicas/musica12.mp3"},
-            {name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg", src:"musicas/musica13.mp3"}
-        ];
+        const playlist = [{name:"A Promessa", img:"imagens/imagem1.jpg", src:"musicas/musica1.mp3"},{name:"Se Hoje Me Tocas", img:"imagens/imagem2.jpg", src:"musicas/musica2.mp3"},{name:"Tu Que Habitas no Jardim", img:"imagens/imagem3.jpg", src:"musicas/musica3.mp3"},{name:"É ele", img:"imagens/imagem4.jpg", src:"musicas/musica4.mp3"},{name:"Yeshua", img:"imagens/imagem5.jpg", src:"musicas/musica5.mp3"},{name:"Não mais escravos", img:"imagens/imagem6.jpg", src:"musicas/musica6.mp3"},{name:"Me ama", img:"imagens/imagem7.jpg", src:"musicas/musica7.mp3"},{name:"Mesmo sem entender", img:"imagens/imagem8.jpg", src:"musicas/musica8.mp3"},{name:"Quando o mundo cai ao meu redor", img:"imagens/imagem9.jpg", src:"musicas/musica9.mp3"},{name:"Me leva pra casa", img:"imagens/imagem10.jpg", src:"musicas/musica10.mp3"},{name:"Uma nova história", img:"imagens/imagem11.jpg", src:"musicas/musica11.mp3"},{name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg", src:"musicas/musica12.mp3"},{name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg", src:"musicas/musica13.mp3"}];
         let currentIndex = 0; const audio = document.getElementById("audio");
         function playMusic(i) { currentIndex = i; audio.src = playlist[currentIndex].src; audio.play(); document.getElementById("now").innerText = playlist[currentIndex].name; document.getElementById("cover").src = playlist[currentIndex].img; updateIcon(); }
         function toggle() { if(audio.src) audio.paused ? audio.play() : audio.pause(); updateIcon(); }
