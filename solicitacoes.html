@@ -84,8 +84,8 @@
 </aside>
 
 <main class="main">
-    <h1 style="font-weight: 800; margin-bottom: 10px;">Buscar Louvor</h1>
-    <p style="color: #94a3b8; margin-bottom: 25px; font-size: 14px;">Ouça 30s e peça para o Luan adicionar.</p>
+    <h1 style="font-weight: 800; margin-bottom: 10px;">Buscar Música</h1>
+    <p style="color: #94a3b8; margin-bottom: 25px; font-size: 14px;">Ouça 30s e peça para SOᑌᘉᗞ adicionar.</p>
     
     <input type="text" id="pesquisa" class="search-input" placeholder="Digite o louvor..." oninput="buscar()">
     
@@ -94,7 +94,7 @@
 
 <div id="modal">
     <div class="modal-box">
-        <h2 style="color: var(--primary); font-size: 18px;">Solicitar Louvor</h2>
+        <h2 style="color: var(--primary); font-size: 18px;">Solicitar Música</h2>
         <h3 id="nomeMusica" style="margin-top: 15px; font-size: 15px; color: #eee; font-style: italic;"></h3>
         <input type="email" id="email" placeholder="Seu e-mail">
         <button id="sendBtn" class="btn-request" onclick="enviar()">Confirmar Pedido</button>
@@ -178,7 +178,7 @@ function enviar(){
         musica: musicaAtual,
         email: email
     }).then(() => {
-        alert("Pedido enviado! O Luan vai adicionar em breve. 🚀");
+        alert("Pedido enviado! SOᑌᘉᗞ vai adicionar em breve. 🚀");
         fechar();
         btn.innerText = "Confirmar Pedido";
         btn.disabled = false;
