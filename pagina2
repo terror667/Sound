@@ -1,16 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Página 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOᑌᘉᗞ | Biblioteca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-glow: rgba(0, 212, 255, 0.4);
+            --bg-dark: #050a10;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass: rgba(15, 25, 35, 0.98);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: radial-gradient(circle at bottom left, #0d2b3a, var(--bg-dark));
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 40px 25px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 26px; font-weight: 800; margin-bottom: 40px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-align: center; cursor: pointer;
+        }
+
+        .nav-links li {
+            list-style: none; padding: 14px 20px; border-radius: 14px;
+            margin-bottom: 8px; cursor: pointer; color: #94a3b8; transition: 0.3s;
+        }
+
+        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
+        .nav-links li:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1; padding: 40px; height: 100vh; overflow-y: auto;
+        }
+
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+        .header-section p { color: #94a3b8; font-size: 14px; }
+
+        /* PLAYLISTS GRID */
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .playlist-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .playlist-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+            border-color: var(--primary);
+        }
+
+        .icon-box {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--primary), #0055ff);
+            border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .info h4 { font-size: 16px; margin-bottom: 4px; color: #fff; }
+        .info span { font-size: 12px; color: #64748b; }
+
+        /* MOBILE FIXES */
+        @media (max-width: 850px) {
+            .sidebar { display: none; }
+            .main { padding: 25px; }
+            .playlist-grid { grid-template-columns: 1fr; }
+            .header-section h1 { font-size: 24px; }
+            
+            /* Botão de voltar flutuante para mobile */
+            .mobile-back {
+                display: block;
+                margin-bottom: 20px;
+                color: var(--primary);
+                font-weight: 600;
+                text-decoration: none;
+            }
+        }
+        
+        @media (min-width: 851px) { .mobile-back { display: none; } }
+    </style>
 </head>
-<body style="background:black; color:white;">
+<body>
 
-<h1>Segunda página do SOᑌᘉᗞ 🎧</h1>
+<aside class="sidebar">
+    <div class="logo" onclick="window.location.href='index.html'">SOᑌᘉᗞ</div>
+    <ul class="nav-links">
+        <li onclick="window.location.href='index.html'">🏠 Início</li>
+        <li class="active">📂 Biblioteca</li>
+        <li>⚙️ Ajustes</li>
+    </ul>
+</aside>
 
-<p>Aqui você coloca o conteúdo novo.</p>
+<main class="main">
+    <a href="index.html" class="mobile-back">← Voltar para Início</a>
+    
+    <div class="header-section">
+        <h1>Sua Biblioteca</h1>
+        <p>Organize seus sons por categorias e estilos.</p>
+    </div>
 
-<a href="index.html">Voltar</a>
+    <div class="playlist-grid">
+        <div class="playlist-card">
+            <div class="icon-box">🎧</div>
+            <div class="info">
+                <h4>Mix Diário</h4>
+                <span>Feito para você</span>
+            </div>
+        </div>
+
+        <div class="playlist-card">
+            <div class="icon-box">✨</div>
+            <div class="info">
+                <h4>Favoritos</h4>
+                <span>Músicas curtidas</span>
+            </div>
+        </div>
+
+        <div class="playlist-card">
+            <div class="icon-box">☁️</div>
+            <div class="info">
+                <h4>Relax</h4>
+                <span>Para descansar</span>
+            </div>
+        </div>
+
+        <div class="playlist-card">
+            <div class="icon-box">🔥</div>
+            <div class="info">
+                <h4>Top Semanal</h4>
+                <span>As mais ouvidas</span>
+            </div>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>
