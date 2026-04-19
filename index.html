@@ -1,406 +1,390 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOᑌᘉᗞ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOᑌᘉᗞ | Music Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --bg-dark: #050a0f;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass: rgba(10, 20, 30, 0.8);
+        }
 
-<link rel="icon" type="image/png" href="logo.png">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-}
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, #0b1d26, var(--bg-dark));
+            color: white;
+            overflow-x: hidden;
+        }
 
-body {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #0b1d26, #000);
-  color: white;
-}
+        /* SIDEBAR MODERNA */
+        .sidebar {
+            width: 260px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 30px 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
 
-/* SIDEBAR */
-.sidebar {
-  width: 230px;
-  background: rgba(0,0,0,0.9);
-  padding: 25px;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* LOGO SIDEBAR */
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#00d4ff;
-  font-weight:bold;
-  font-size:18px;
-}
+        .nav-links {
+            list-style: none;
+        }
 
-.logo img{
-  width:35px;
-  height:35px;
-  object-fit:contain;
-  border-radius:8px;
-}
+        .nav-links li {
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #888;
+            margin-bottom: 5px;
+        }
 
-/* MAIN */
-.main {
-  flex: 1;
-  padding: 30px;
-  padding-bottom: 170px;
-}
+        .nav-links li:hover, .nav-links li.active {
+            background: var(--card-bg);
+            color: var(--primary);
+        }
 
-.header {
-  font-size: 28px;
-  margin-bottom: 25px;
-}
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            height: 100vh;
+            padding-bottom: 120px;
+        }
 
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 20px;
-}
+        .header {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* CARD */
-.card {
-  text-align: center;
-  cursor: pointer;
-}
+        /* GRID DE CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+        }
 
-.img-box {
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: linear-gradient(145deg, #0a0a0a, #111);
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: 0.3s;
-}
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
 
-.img-box img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
 
-.card:hover .img-box {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 30px rgba(0,212,255,0.25);
-}
+        .img-box {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
 
-.card h4 {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #ccc;
-}
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
 
-/* PLAYER */
-.player {
-  position: fixed;
-  bottom: 0;
-  left: 230px;
-  right: 0;
-  background: rgba(10,10,10,0.97);
-  padding: 15px;
-  border-top: 1px solid #00d4ff33;
-}
+        .card:hover .img-box img {
+            transform: scale(1.1);
+        }
 
-.player-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+        .card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-#cover {
-  width: 55px;
-  height: 55px;
-  border-radius: 10px;
-  object-fit: contain;
-  background: #111;
-}
+        /* PLAYER FLUTUANTE */
+        .player {
+            position: fixed;
+            bottom: 20px;
+            left: 280px;
+            right: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 15px 25px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
 
-#now {
-  color: #00d4ff;
-  font-size: 14px;
-}
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 30%;
+        }
 
-/* CONTROLS */
-.controls {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
-}
+        #cover {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #111;
+        }
 
-button {
-  background: #111;
-  border: 1px solid #00d4ff55;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-}
+        .track-details h3 { font-size: 14px; margin-bottom: 4px; }
+        .track-details p { font-size: 12px; color: var(--primary); }
 
-button:hover {
-  background: #00d4ff22;
-}
+        .player-controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* BARRA */
-.progress {
-  width: 100%;
-  margin-top: 10px;
-}
+        .btns {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-/* INFO */
-.info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #aaa;
-  margin-top: 5px;
-}
+        .btn-control {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-/* VOLUME */
-.volume {
-  width: 120px;
-}
+        .btn-control:hover { color: var(--primary); transform: scale(1.1); }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { width: 100%; text-align: center; }
-  .grid { grid-template-columns: repeat(2, 1fr); }
-  .player { left: 0; }
-}
-</style>
+        .btn-play {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+        }
+
+        /* PROGRESS BAR CUSTOM */
+        .progress-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .volume-container {
+            width: 20%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .player { left: 10px; right: 10px; bottom: 10px; }
+            .volume-container { display: none; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="sidebar">
-  <div class="logo">
-    <span>SOᑌᘉᗞ 🎧</span>
-  </div>
-</div>
+<aside class="sidebar">
+    <div class="logo">SOᑌᘉᗞ 🎧</div>
+    <ul class="nav-links">
+        <li class="active">Explorar</li>
+        <li>Favoritas</li>
+        <li>Playlists</li>
+        <li>Configurações</li>
+    </ul>
+</aside>
 
-<a href="pagina2.html">Ir para Página 2</a>
-  
-<div class="main">
-
-  <div class="header">Vibe do momento</div>
-
-  <div class="grid">
-
-    <div class="card" onclick="playMusic(0)">
-      <div class="img-box"><img src="imagens/imagem1.jpg"></div>
-      <h4>A Promessa</h4>
+<main class="main">
+    <div class="header">
+        <span>Vibe do momento</span>
+        <a href="pagina2.html" style="color: var(--primary); text-decoration: none; font-size: 14px;">Ver tudo</a>
     </div>
 
-    <div class="card" onclick="playMusic(1)">
-      <div class="img-box"><img src="imagens/imagem2.jpg"></div>
-      <h4>Se Hoje Me Tocas</h4>
-    </div>
+    <div class="grid" id="music-grid">
+        </div>
+</main>
 
-    <div class="card" onclick="playMusic(2)">
-      <div class="img-box"><img src="imagens/imagem3.jpg"></div>
-      <h4>Tu Que Habitas no Jardim</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(3)">
-      <div class="img-box"><img src="imagens/imagem4.jpg"></div>
-      <h4>É ele</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(4)">
-      <div class="img-box"><img src="imagens/imagem5.jpg"></div>
-      <h4>Yeshua</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(5)">
-      <div class="img-box"><img src="imagens/imagem6.jpg"></div>
-      <h4>Não mais escravos</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(6)">
-      <div class="img-box"><img src="imagens/imagem7.jpg"></div>
-      <h4>Me ama</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(7)">
-      <div class="img-box"><img src="imagens/imagem8.jpg"></div>
-      <h4>Mesmo sem entender</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(8)">
-      <div class="img-box"><img src="imagens/imagem9.jpg"></div>
-      <h4>Quando o mundo cai ao meu redor</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(9)">
-      <div class="img-box"><img src="imagens/imagem10.jpg"></div>
-      <h4>Me leva pra casa</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(10)">
-      <div class="img-box"><img src="imagens/imagem11.jpg"></div>
-      <h4>Uma nova história</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(11)">
-      <div class="img-box"><img src="imagens/imagem12.jpg"></div>
-      <h4>Nunca foi sobre nós</h4>
-    </div>
-
-    <div class="card" onclick="playMusic(12)">
-      <div class="img-box"><img src="imagens/imagem13.jpg"></div>
-      <h4>Me ajuda a melhorar</h4>
-    </div>
-
-  </div>
-</div>
-
-<!-- PLAYER -->
 <div class="player">
-
-  <div class="player-top">
-    <img id="cover">
-    <div>
-      <div id="now"></div>
-      <input type="range" class="volume" min="0" max="1" step="0.01" onchange="setVolume(this.value)">
+    <div class="player-info">
+        <img id="cover" src="https://via.placeholder.com/60" alt="Capa">
+        <div class="track-details">
+            <h3 id="now">Selecione uma música</h3>
+            <p id="artist">Artista</p>
+        </div>
     </div>
-  </div>
 
-  <div class="controls">
+    <div class="player-controls">
+        <div class="btns">
+            <button class="btn-control" onclick="prev()">⏮</button>
+            <button class="btn-control btn-play" onclick="toggle()" id="playBtn">▶</button>
+            <button class="btn-control" onclick="next()">⏭</button>
+        </div>
+        <div class="progress-container">
+            <span id="current">0:00</span>
+            <input type="range" id="progress" value="0">
+            <span id="duration">0:00</span>
+        </div>
+    </div>
 
-    <button onclick="prev()">⏮</button>
+    <div class="volume-container">
+        <span>🔊</span>
+        <input type="range" min="0" max="1" step="0.01" oninput="setVolume(this.value)" style="width: 80px;">
+    </div>
 
-    <!-- BOTÃO SPOTIFY STYLE -->
-    <button onclick="toggle()" id="playBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    </button>
-
-    <button onclick="next()">⏭</button>
-
-  </div>
-
-  <input type="range" id="progress" class="progress">
-
-  <div class="info">
-    <span id="current">0:00</span>
-    <span id="duration">0:00</span>
-  </div>
-
-  <audio id="audio"></audio>
+    <audio id="audio"></audio>
 </div>
 
 <script>
+    const playlist = [
+        {name: "A Promessa", img: "imagens/imagem1.jpg", src: "musicas/musica1.mp3"},
+        {name: "Se Hoje Me Tocas", img: "imagens/imagem2.jpg", src: "musicas/musica2.mp3"},
+        {name: "Tu Que Habitas no Jardim", img: "imagens/imagem3.jpg", src: "musicas/musica3.mp3"},
+        {name: "É ele", img: "imagens/imagem4.jpg", src: "musicas/musica4.mp3"},
+        {name: "Yeshua", img: "imagens/imagem5.jpg", src: "musicas/musica5.mp3"},
+        {name: "Não mais escravos", img: "imagens/imagem6.jpg", src: "musicas/musica6.mp3"},
+        {name: "Me ama", img: "imagens/imagem7.jpg", src: "musicas/musica7.mp3"},
+        {name: "Mesmo sem entender", img: "imagens/imagem8.jpg", src: "musicas/musica8.mp3"},
+        {name: "Quando o mundo cai ao meu redor", img: "imagens/imagem9.jpg", src: "musicas/musica9.mp3"},
+        {name: "Me leva pra casa", img: "imagens/imagem10.jpg", src: "musicas/musica10.mp3"},
+        {name: "Uma nova história", img: "imagens/imagem11.jpg", src: "musicas/musica11.mp3"},
+        {name: "Nunca foi sobre nós", img: "imagens/imagem12.jpg", src: "musicas/musica12.mp3"},
+        {name: "Me ajuda a melhorar", img: "imagens/imagem13.jpg", src: "musicas/musica13.mp3"}
+    ];
 
-const audio = document.getElementById("audio");
-const now = document.getElementById("now");
-const cover = document.getElementById("cover");
-const progress = document.getElementById("progress");
-const current = document.getElementById("current");
-const duration = document.getElementById("duration");
-const playBtn = document.getElementById("playBtn");
+    const grid = document.getElementById('music-grid');
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("playBtn");
+    let currentIndex = 0;
+    let isPlaying = false;
 
-let playlist = [
-  {src:"musicas/musica1.mp3", name:"A Promessa", img:"imagens/imagem1.jpg"},
-  {src:"musicas/musica2.mp3", name:"Se Hoje Me Tocas", img:"imagens/imagem2.jpg"},
-  {src:"musicas/musica3.mp3", name:"Tu Que Habitas no Jardim", img:"imagens/imagem3.jpg"},
-  {src:"musicas/musica4.mp3", name:"É ele", img:"imagens/imagem4.jpg"},
-  {src:"musicas/musica5.mp3", name:"Yeshua", img:"imagens/imagem5.jpg"},
-  {src:"musicas/musica6.mp3", name:"Não mais escravos", img:"imagens/imagem6.jpg"},
-  {src:"musicas/musica7.mp3", name:"Me ama", img:"imagens/imagem7.jpg"},
-  {src:"musicas/musica8.mp3", name:"Mesmo sem entender", img:"imagens/imagem8.jpg"},
-  {src:"musicas/musica9.mp3", name:"Quando o mundo cai ao meu redor", img:"imagens/imagem9.jpg"},
-  {src:"musicas/musica10.mp3", name:"Me leva pra casa", img:"imagens/imagem10.jpg"},
-  {src:"musicas/musica11.mp3", name:"Uma nova história", img:"imagens/imagem11.jpg"},
-  {src:"musicas/musica12.mp3", name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg"},
-  {src:"musicas/musica13.mp3", name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg"}
-];
+    // Renderizar Cards
+    playlist.forEach((music, i) => {
+        grid.innerHTML += `
+            <div class="card" onclick="playMusic(${i})">
+                <div class="img-box">
+                    <img src="${music.img}" onerror="this.src='https://via.placeholder.com/180/111/00d4ff?text=SOUND'">
+                </div>
+                <h4>${music.name}</h4>
+            </div>
+        `;
+    });
 
-let index = 0;
-let started = false;
+    function playMusic(i) {
+        currentIndex = i;
+        const m = playlist[currentIndex];
+        audio.src = m.src;
+        audio.play();
+        
+        document.getElementById("now").innerText = m.name;
+        document.getElementById("cover").src = m.img;
+        isPlaying = true;
+        updatePlayBtn();
+    }
 
-function playMusic(i){
-  index = i;
-  let m = playlist[index];
+    function toggle() {
+        if (!audio.src) return;
+        if (audio.paused) {
+            audio.play();
+            isPlaying = true;
+        } else {
+            audio.pause();
+            isPlaying = false;
+        }
+        updatePlayBtn();
+    }
 
-  audio.src = m.src;
-  audio.play();
+    function updatePlayBtn() {
+        playBtn.innerHTML = isPlaying ? "⏸" : "▶";
+    }
 
-  now.innerText = m.name;
-  cover.src = m.img;
+    function next() {
+        currentIndex = (currentIndex + 1) % playlist.length;
+        playMusic(currentIndex);
+    }
 
-  started = true;
+    function prev() {
+        currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+        playMusic(currentIndex);
+    }
 
-  playBtn.innerHTML = pauseIcon();
-}
+    function setVolume(v) { audio.volume = v; }
 
-function next(){
-  index = (index + 1) % playlist.length;
-  playMusic(index);
-}
+    audio.addEventListener("timeupdate", () => {
+        const progress = document.getElementById("progress");
+        progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+        document.getElementById("current").innerText = format(audio.currentTime);
+        document.getElementById("duration").innerText = format(audio.duration);
+    });
 
-function prev(){
-  index = (index - 1 + playlist.length) % playlist.length;
-  playMusic(index);
-}
+    function format(s) {
+        let m = Math.floor(s / 60) || 0;
+        let sec = Math.floor(s % 60) || 0;
+        return m + ":" + (sec < 10 ? "0" + sec : sec);
+    }
 
-function toggle(){
-  if(!started) return;
-
-  if(audio.paused){
-    audio.play();
-    playBtn.innerHTML = pauseIcon();
-  } else {
-    audio.pause();
-    playBtn.innerHTML = playIcon();
-  }
-}
-
-function playIcon(){
-  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
-    <path d="M8 5v14l11-7z"/>
-  </svg>`;
-}
-
-function pauseIcon(){
-  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
-    <path d="M6 5h4v14H6zM14 5h4v14h-4z"/>
-  </svg>`;
-}
-
-function setVolume(v){
-  audio.volume = v;
-}
-
-audio.addEventListener("timeupdate", () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-  current.innerText = format(audio.currentTime);
-  duration.innerText = format(audio.duration);
-});
-
-progress.addEventListener("input", () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
-});
-
-function format(s){
-  let m = Math.floor(s / 60) || 0;
-  let sec = Math.floor(s % 60) || 0;
-  return m + ":" + (sec < 10 ? "0"+sec : sec);
-}
-
-audio.addEventListener("ended", next);
-
+    audio.addEventListener("ended", next);
 </script>
 
 </body>
