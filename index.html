@@ -49,6 +49,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
+            cursor: pointer;
         }
 
         .nav-links li {
@@ -62,6 +63,7 @@
         }
 
         .nav-links li.active { background: var(--card-bg); color: var(--primary); }
+        .nav-links li:hover { color: #fff; background: rgba(255,255,255,0.05); }
 
         /* MAIN */
         .main {
@@ -161,7 +163,6 @@
         
         .play-btn-circle svg { fill: #000 !important; width: 28px; height: 28px; }
 
-        /* PROGRESS BAR TOTALMENTE CUSTOM (SEM BOLINHA) */
         .progress-area {
             width: 100%;
             display: flex;
@@ -178,7 +179,7 @@
             border-radius: 10px;
             position: relative;
             cursor: pointer;
-            overflow: hidden; /* Garante que o preenchimento não saia do raio */
+            overflow: hidden;
         }
 
         .fill {
@@ -189,7 +190,6 @@
             transition: width 0.1s linear;
         }
 
-        /* VOLUME */
         .volume-container {
             position: relative;
             display: flex;
@@ -255,8 +255,8 @@
 <aside class="sidebar">
     <div class="logo">SOᑌᘉᗞ</div>
     <ul class="nav-links">
-        <li class="active">🏠 Início</li>
-        <li>📂 Biblioteca</li>
+        <li class="active" onclick="window.location.href='index.html'">🏠 Início</li>
+        <li onclick="window.location.href='pagina2.html'">📂 Biblioteca</li>
         <li>⚙️ Ajustes</li>
     </ul>
 </aside>
@@ -332,7 +332,6 @@
     const barContainer = document.getElementById("bar-container");
     let currentIndex = 0;
 
-    // Render Cards
     const grid = document.getElementById("grid");
     playlist.forEach((m, i) => {
         grid.innerHTML += `
@@ -368,7 +367,6 @@
     function next() { currentIndex = (currentIndex + 1) % playlist.length; playMusic(currentIndex); }
     function prev() { currentIndex = (currentIndex - 1 + playlist.length) % playlist.length; playMusic(currentIndex); }
 
-    // Logica da Barra de Progresso
     barContainer.addEventListener("click", (e) => {
         const rect = barContainer.getBoundingClientRect();
         const pos = (e.clientX - rect.left) / rect.width;
@@ -388,18 +386,15 @@
         return m + ":" + (sec < 10 ? "0"+sec : sec);
     }
 
-    // Volume Pop
     function toggleVol() {
         const pop = document.getElementById("volPop");
         pop.classList.toggle("show");
-        // Fecha sozinho depois de 4 segundos
         if(pop.classList.contains("show")) {
             setTimeout(() => pop.classList.remove("show"), 4000);
         }
     }
 
     function setVolume(v) { audio.volume = v; }
-
     audio.addEventListener("ended", next);
 </script>
 
