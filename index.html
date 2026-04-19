@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOᑌᘉᗞ | Experience</title>
+    <title>SOᑌᘉᗞ | Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d4ff;
-            --primary-glow: rgba(0, 212, 255, 0.3);
-            --bg-dark: #050a0f;
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --glass: rgba(13, 25, 35, 0.85);
+            --primary-glow: rgba(0, 212, 255, 0.4);
+            --bg-dark: #050a10;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass: rgba(15, 25, 35, 0.9);
         }
 
         * {
@@ -33,13 +33,12 @@
         /* SIDEBAR */
         .sidebar {
             width: 260px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(20px);
             padding: 40px 25px;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            transition: 0.3s;
         }
 
         .logo {
@@ -60,14 +59,9 @@
             cursor: pointer;
             color: #94a3b8;
             transition: 0.3s;
-            font-weight: 500;
         }
 
-        .nav-links li:hover, .nav-links li.active {
-            background: var(--card-bg);
-            color: var(--primary);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
-        }
+        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
 
         /* MAIN */
         .main {
@@ -75,7 +69,7 @@
             padding: 40px;
             height: 100vh;
             overflow-y: auto;
-            padding-bottom: 140px;
+            padding-bottom: 160px;
         }
 
         .header {
@@ -87,128 +81,90 @@
         /* GRID */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 20px;
         }
 
         .card {
             background: var(--card-bg);
-            padding: 12px;
-            border-radius: 22px;
+            padding: 15px;
+            border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.03);
             cursor: pointer;
-            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: 0.3s ease;
         }
 
-        .card:hover {
-            transform: scale(1.03);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary-glow);
-        }
+        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.08); }
 
         .img-box {
             width: 100%;
             aspect-ratio: 1/1;
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
             margin-bottom: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        .img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card h4 {
-            font-size: 14px;
-            font-weight: 600;
-            padding: 0 5px;
-            color: #e2e8f0;
-        }
-
-        /* PLAYER - O CORAÇÃO DO DESIGN */
+        /* PLAYER */
         .player {
             position: fixed;
-            bottom: 25px;
-            left: 285px; /* Distância da sidebar */
-            right: 25px;
+            bottom: 20px;
+            left: 280px;
+            right: 20px;
             background: var(--glass);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
             padding: 15px 30px;
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: space-between;
             z-index: 9999;
         }
 
-        .track-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            min-width: 200px;
-        }
+        .track-info { display: flex; align-items: center; gap: 15px; min-width: 200px; }
+        #cover { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; }
+        .track-text h3 { font-size: 14px; color: #fff; margin-bottom: 2px; }
+        .track-text p { font-size: 12px; color: var(--primary); }
 
-        #cover {
-            width: 55px;
-            height: 55px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .track-text h3 { font-size: 14px; color: #fff; }
-        .track-text p { font-size: 12px; color: var(--primary); font-weight: 500; }
-
-        /* CONTROLES ESTILIZADOS */
         .controls {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 500px;
+            max-width: 450px;
         }
 
-        .control-btns {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 8px;
-        }
+        .control-btns { display: flex; align-items: center; gap: 20px; margin-bottom: 10px; }
 
-        .btn {
+        /* ESTILO DOS BOTÕES SVG */
+        .btn-svg {
             background: transparent;
             border: none;
-            color: #94a3b8;
             cursor: pointer;
-            font-size: 22px;
-            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: 0.2s;
+            padding: 5px;
         }
 
-        .btn:hover { color: var(--primary); transform: scale(1.1); }
+        .btn-svg svg { fill: #fff; width: 24px; height: 24px; }
+        .btn-svg:hover svg { fill: var(--primary); }
 
-        .play-btn {
-            width: 50px;
-            height: 50px;
+        .play-btn-circle {
+            width: 54px;
+            height: 54px;
             background: #fff;
-            color: #000;
             border-radius: 50%;
-            font-size: 24px;
-            box-shadow: 0 4px 15px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
-
-        .play-btn:hover {
-            transform: scale(1.05);
-            background: var(--primary);
-            color: #fff;
-        }
+        
+        .play-btn-circle svg { fill: #000 !important; width: 28px; height: 28px; }
+        .play-btn-circle:hover { transform: scale(1.05); }
 
         .progress-area {
             width: 100%;
@@ -216,33 +172,25 @@
             align-items: center;
             gap: 12px;
             font-size: 11px;
-            color: #64748b;
+            color: #888;
         }
 
-        input[type="range"] {
-            flex: 1;
-            height: 5px;
-            accent-color: var(--primary);
-            cursor: pointer;
-            border-radius: 5px;
-        }
+        input[type="range"] { flex: 1; height: 4px; accent-color: var(--primary); cursor: pointer; }
 
-        /* MOBILE FIXES */
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 850px) {
             .sidebar { display: none; }
-            .main { padding: 25px; }
-            .player {
-                left: 15px;
-                right: 15px;
-                bottom: 15px;
-                padding: 12px 20px;
-                flex-direction: column;
-                gap: 10px;
-                height: auto;
-            }
-            .track-info { min-width: 100%; justify-content: center; }
+            .main { padding: 20px; }
             .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .player {
+                left: 10px; right: 10px; bottom: 10px;
+                padding: 15px;
+                flex-direction: column;
+                border-radius: 20px;
+            }
+            .track-info { min-width: 100%; margin-bottom: 10px; }
             .volume-box { display: none; }
+            .play-btn-circle { width: 48px; height: 48px; }
         }
     </style>
 </head>
@@ -251,33 +199,39 @@
 <aside class="sidebar">
     <div class="logo">SOᑌᘉᗞ</div>
     <ul class="nav-links">
-        <li class="active">🏠 Início</li>
-        <li>🔍 Descobrir</li>
-        <li>❤️ Favoritas</li>
-        <li>📂 Biblioteca</li>
+        <li class="active">Início</li>
+        <li>Descobrir</li>
+        <li>Favoritas</li>
     </ul>
 </aside>
 
 <main class="main">
     <div class="header">Vibe do momento</div>
-    <div class="grid" id="grid">
-        </div>
+    <div class="grid" id="grid"></div>
 </main>
 
 <div class="player">
     <div class="track-info">
-        <img id="cover" src="https://via.placeholder.com/60/0b1d26/00d4ff?text=..." alt="Capa">
+        <img id="cover" src="https://via.placeholder.com/60/111/00d4ff?text=..." alt="Capa">
         <div class="track-text">
-            <h3 id="now">Aguardando...</h3>
-            <p>Playing Now</p>
+            <h3 id="now">Selecione uma música</h3>
+            <p id="artist">Tocando agora</p>
         </div>
     </div>
 
     <div class="controls">
         <div class="control-btns">
-            <button class="btn" onclick="prev()">⏮</button>
-            <button class="btn play-btn" onclick="toggle()" id="playBtn">▶</button>
-            <button class="btn" onclick="next()">⏭</button>
+            <button class="btn-svg" onclick="prev()">
+                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            
+            <button class="btn-svg play-btn-circle" onclick="toggle()" id="playBtn">
+                <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+
+            <button class="btn-svg" onclick="next()">
+                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
         </div>
         <div class="progress-area">
             <span id="current">0:00</span>
@@ -286,8 +240,8 @@
         </div>
     </div>
 
-    <div class="volume-box" style="width: 150px; display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 14px;">🔊</span>
+    <div class="volume-box" style="width: 120px; display: flex; align-items: center; gap: 10px;">
+        <svg style="width:18px; fill:#888" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
         <input type="range" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)">
     </div>
 
@@ -312,11 +266,10 @@
     ];
 
     const audio = document.getElementById("audio");
-    const playBtn = document.getElementById("playBtn");
+    const playIcon = document.getElementById("playIcon");
     const grid = document.getElementById("grid");
     let currentIndex = 0;
 
-    // Criar cards
     playlist.forEach((m, i) => {
         grid.innerHTML += `
             <div class="card" onclick="playMusic(${i})">
@@ -343,19 +296,14 @@
     }
 
     function updateUI() {
-        playBtn.innerHTML = audio.paused ? "▶" : "⏸";
+        // Altera o caminho do ícone SVG entre Play e Pause
+        playIcon.innerHTML = audio.paused 
+            ? '<path d="M8 5v14l11-7z"/>' 
+            : '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
     }
 
-    function next() {
-        currentIndex = (currentIndex + 1) % playlist.length;
-        playMusic(currentIndex);
-    }
-
-    function prev() {
-        currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-        playMusic(currentIndex);
-    }
-
+    function next() { currentIndex = (currentIndex + 1) % playlist.length; playMusic(currentIndex); }
+    function prev() { currentIndex = (currentIndex - 1 + playlist.length) % playlist.length; playMusic(currentIndex); }
     function setVolume(v) { audio.volume = v; }
 
     audio.addEventListener("timeupdate", () => {
