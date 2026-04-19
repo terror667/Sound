@@ -237,7 +237,7 @@ button:hover {
 
     <div class="card" onclick="playMusic(8)">
       <div class="img-box"><img src="imagens/imagem9.jpg"></div>
-      <h4>Quando o mundo cai</h4>
+      <h4>Quando o mundo cai ao meu redor</h4>
     </div>
 
     <div class="card" onclick="playMusic(9)">
@@ -275,9 +275,18 @@ button:hover {
   </div>
 
   <div class="controls">
+
     <button onclick="prev()">⏮</button>
-    <button onclick="toggle()" id="playBtn">▶</button>
+
+    <!-- BOTÃO SPOTIFY STYLE -->
+    <button onclick="toggle()" id="playBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+
     <button onclick="next()">⏭</button>
+
   </div>
 
   <input type="range" id="progress" class="progress">
@@ -298,6 +307,7 @@ const cover = document.getElementById("cover");
 const progress = document.getElementById("progress");
 const current = document.getElementById("current");
 const duration = document.getElementById("duration");
+const playBtn = document.getElementById("playBtn");
 
 let playlist = [
   {src:"musicas/musica1.mp3", name:"A Promessa", img:"imagens/imagem1.jpg"},
@@ -321,12 +331,16 @@ let started = false;
 function playMusic(i){
   index = i;
   let m = playlist[index];
+
   audio.src = m.src;
   audio.play();
 
   now.innerText = m.name;
   cover.src = m.img;
+
   started = true;
+
+  playBtn.innerHTML = pauseIcon();
 }
 
 function next(){
@@ -341,7 +355,26 @@ function prev(){
 
 function toggle(){
   if(!started) return;
-  audio.paused ? audio.play() : audio.pause();
+
+  if(audio.paused){
+    audio.play();
+    playBtn.innerHTML = pauseIcon();
+  } else {
+    audio.pause();
+    playBtn.innerHTML = playIcon();
+  }
+}
+
+function playIcon(){
+  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
+    <path d="M8 5v14l11-7z"/>
+  </svg>`;
+}
+
+function pauseIcon(){
+  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="#00d4ff">
+    <path d="M6 5h4v14H6zM14 5h4v14h-4z"/>
+  </svg>`;
 }
 
 function setVolume(v){
@@ -364,9 +397,7 @@ function format(s){
   return m + ":" + (sec < 10 ? "0"+sec : sec);
 }
 
-audio.addEventListener("ended", () => {
-  next();
-});
+audio.addEventListener("ended", next);
 
 </script>
 
