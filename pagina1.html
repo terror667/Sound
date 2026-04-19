@@ -2,12 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: radial-gradient(circle at top right, #0d2b3a, var(--bg-dark)); color: white; display: flex; overflow-x: hidden; height: 100vh; }
-        
         .menu-toggle { display: none; position: fixed; top: 20px; left: 20px; z-index: 10001; background: transparent; border: none; cursor: pointer; }
         .ham-box { width: 30px; height: 24px; position: relative; }
         .ham-line { width: 100%; height: 3px; background: #fff; position: absolute; transition: 0.4s; border-radius: 3px;}
@@ -15,19 +14,16 @@
         .active .ham-line:nth-child(1) { transform: translateY(10px) rotate(45deg); }
         .active .ham-line:nth-child(2) { opacity: 0; }
         .active .ham-line:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
-
-        .sidebar { width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05); }
+        .sidebar { width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05); transition: 0.4s; }
         .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; }
         .nav-links li.active { background: var(--card-bg); color: var(--primary); }
-
         .main { flex: 1; padding: 40px; overflow-y: auto; padding-bottom: 120px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
         .card { background: var(--card-bg); padding: 15px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
         .img-box { width: 100%; aspect-ratio: 1/1; border-radius: 15px; overflow: hidden; margin-bottom: 10px; }
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        @media (max-width: 850px) { .menu-toggle { display: block; } .sidebar { position: fixed; left: -260px; height: 100%; z-index: 10000; transition: 0.4s; } .sidebar.open { left: 0; } .main { padding: 80px 20px; } }
+        @media (max-width: 850px) { .menu-toggle { display: block; } .sidebar { position: fixed; left: -260px; height: 100%; z-index: 10000; } .sidebar.open { left: 0; } .main { padding: 80px 20px; } }
     </style>
 </head>
 <body>
