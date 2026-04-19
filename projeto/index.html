@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOᑌᘉᗞ | Ultra Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-glow: rgba(0, 212, 255, 0.4);
+            --bg-dark: #050a10;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass: rgba(15, 25, 35, 0.98);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #0d2b3a, var(--bg-dark));
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 40px 25px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .nav-links li {
+            list-style: none;
+            padding: 14px 20px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: 0.3s;
+        }
+
+        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
+        .nav-links li:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 40px;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 200px;
+        }
+
+        .header { font-size: 28px; font-weight: 700; margin-bottom: 30px; }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.08); }
+
+        .img-box {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .card h4 { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+
+        /* PLAYER */
+        .player {
+            position: fixed;
+            bottom: 20px;
+            left: 280px;
+            right: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 9999;
+        }
+
+        .track-info { display: flex; align-items: center; gap: 15px; min-width: 220px; }
+        #cover { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; background: #111; }
+        .track-text h3 { font-size: 14px; color: #fff; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;}
+        .track-text p { font-size: 12px; color: var(--primary); }
+
+        .controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+
+        .control-btns { display: flex; align-items: center; gap: 25px; margin-bottom: 12px; }
+
+        .btn-svg {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .btn-svg svg { fill: #fff; width: 24px; height: 24px; }
+        .btn-svg:hover svg { fill: var(--primary); }
+
+        .play-btn-circle {
+            width: 54px;
+            height: 54px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        
+        .play-btn-circle svg { fill: #000 !important; width: 28px; height: 28px; }
+
+        .progress-area {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .custom-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: width 0.1s linear;
+        }
+
+        .volume-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 150px;
+        }
+
+        .vol-pop {
+            position: absolute;
+            bottom: 50px;
+            background: var(--glass);
+            padding: 15px 8px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .vol-pop.show { display: flex; }
+
+        .vol-pop input {
+            -webkit-appearance: none;
+            width: 4px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .vol-pop input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* MOBILE FIXES */
+        @media (max-width: 850px) {
+            .sidebar { display: none; }
+            .main { padding: 20px; }
+            .player {
+                left: 10px; right: 10px; bottom: 15px;
+                padding: 15px 20px;
+                flex-direction: column;
+                border-radius: 25px;
+            }
+            .track-info { min-width: 100%; margin-bottom: 15px; justify-content: flex-start; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .volume-container { position: absolute; top: 15px; right: 20px; width: auto; }
+            .controls { width: 100%; margin: 0; }
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="logo">SOᑌᘉᗞ</div>
+    <ul class="nav-links">
+        <li class="active" onclick="window.location.href='index.html'">🏠 Início</li>
+        <li onclick="window.location.href='pagina2.html'">📂 Biblioteca</li>
+        <li>⚙️ Ajustes</li>
+    </ul>
+</aside>
+
+<main class="main">
+    <div class="header">Vibe do momento</div>
+    <div id="grid" class="grid"></div>
+</main>
+
+<div class="player">
+    <div class="track-info">
+        <img id="cover" src="" alt="">
+        <div class="track-text">
+            <h3 id="now">Aguardando...</h3>
+            <p id="status">Selecione um som</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-btns">
+            <button class="btn-svg" onclick="prev()">
+                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="btn-svg play-btn-circle" onclick="toggle()">
+                <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <button class="btn-svg" onclick="next()">
+                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+        </div>
+        
+        <div class="progress-area">
+            <span id="current">0:00</span>
+            <div class="custom-bar" id="bar-container">
+                <div class="fill" id="bar-fill"></div>
+            </div>
+            <span id="duration">0:00</span>
+        </div>
+    </div>
+
+    <div class="volume-container">
+        <div class="vol-pop" id="volPop">
+            <input type="range" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical;">
+        </div>
+        <button class="btn-svg" onclick="toggleVol()">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        </button>
+    </div>
+
+    <audio id="audio"></audio>
+</div>
+
+<script>
+    const playlist = [
+        {name:"A Promessa", img:"imagens/imagem1.jpg", src:"musicas/musica1.mp3"},
+        {name:"Se Hoje Me Tocas", img:"imagens/imagem2.jpg", src:"musicas/musica2.mp3"},
+        {name:"Tu Que Habitas no Jardim", img:"imagens/imagem3.jpg", src:"musicas/musica3.mp3"},
+        {name:"É ele", img:"imagens/imagem4.jpg", src:"musicas/musica4.mp3"},
+        {name:"Yeshua", img:"imagens/imagem5.jpg", src:"musicas/musica5.mp3"},
+        {name:"Não mais escravos", img:"imagens/imagem6.jpg", src:"musicas/musica6.mp3"},
+        {name:"Me ama", img:"imagens/imagem7.jpg", src:"musicas/musica7.mp3"},
+        {name:"Mesmo sem entender", img:"imagens/imagem8.jpg", src:"musicas/musica8.mp3"},
+        {name:"Quando o mundo cai ao meu redor", img:"imagens/imagem9.jpg", src:"musicas/musica9.mp3"},
+        {name:"Me leva pra casa", img:"imagens/imagem10.jpg", src:"musicas/musica10.mp3"},
+        {name:"Uma nova história", img:"imagens/imagem11.jpg", src:"musicas/musica11.mp3"},
+        {name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg", src:"musicas/musica12.mp3"},
+        {name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg", src:"musicas/musica13.mp3"}
+    ];
+
+    const audio = document.getElementById("audio");
+    const playIcon = document.getElementById("playIcon");
+    const barFill = document.getElementById("bar-fill");
+    const barContainer = document.getElementById("bar-container");
+    let currentIndex = 0;
+
+    const grid = document.getElementById("grid");
+    playlist.forEach((m, i) => {
+        grid.innerHTML += `
+            <div class="card" onclick="playMusic(${i})">
+                <div class="img-box"><img src="${m.img}" onerror="this.src='https://via.placeholder.com/150/111/00d4ff?text=SOUND'"></div>
+                <h4>${m.name}</h4>
+            </div>
+        `;
+    });
+
+    function playMusic(i) {
+        currentIndex = i;
+        audio.src = playlist[currentIndex].src;
+        audio.play();
+        document.getElementById("now").innerText = playlist[currentIndex].name;
+        document.getElementById("cover").src = playlist[currentIndex].img;
+        document.getElementById("status").innerText = "Tocando agora";
+        updateIcon();
+    }
+
+    function toggle() {
+        if (!audio.src) return;
+        audio.paused ? audio.play() : audio.pause();
+        updateIcon();
+    }
+
+    function updateIcon() {
+        playIcon.innerHTML = audio.paused 
+            ? '<path d="M8 5v14l11-7z"/>' 
+            : '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    }
+
+    function next() { currentIndex = (currentIndex + 1) % playlist.length; playMusic(currentIndex); }
+    function prev() { currentIndex = (currentIndex - 1 + playlist.length) % playlist.length; playMusic(currentIndex); }
+
+    barContainer.addEventListener("click", (e) => {
+        const rect = barContainer.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pos * audio.duration;
+    });
+
+    audio.addEventListener("timeupdate", () => {
+        const pct = (audio.currentTime / audio.duration) * 100 || 0;
+        barFill.style.width = pct + "%";
+        document.getElementById("current").innerText = format(audio.currentTime);
+        document.getElementById("duration").innerText = isNaN(audio.duration) ? "0:00" : format(audio.duration);
+    });
+
+    function format(s) {
+        let m = Math.floor(s / 60);
+        let sec = Math.floor(s % 60);
+        return m + ":" + (sec < 10 ? "0"+sec : sec);
+    }
+
+    function toggleVol() {
+        const pop = document.getElementById("volPop");
+        pop.classList.toggle("show");
+        if(pop.classList.contains("show")) {
+            setTimeout(() => pop.classList.remove("show"), 4000);
+        }
+    }
+
+    function setVolume(v) { audio.volume = v; }
+    audio.addEventListener("ended", next);
+</script>
+
+</body>
+</html>
