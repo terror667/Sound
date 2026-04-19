@@ -6,18 +6,11 @@
     <title>SOᑌᘉᗞ | Ultra Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #00d4ff; 
-            --bg-dark: #050a10; 
-            --glass: rgba(15, 25, 35, 0.98); 
-            --primary-glow: rgba(0, 212, 255, 0.4);
-        }
+        :root { --primary: #00d4ff; --bg-dark: #050a10; --glass: rgba(15, 25, 35, 0.98); --primary-glow: rgba(0, 212, 255, 0.4); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         body, html { width: 100%; height: 100%; background: var(--bg-dark); overflow: hidden; color: white; }
-
         #content-frame { width: 100%; height: 100%; border: none; padding-bottom: 110px; }
 
-        /* PLAYER */
         .player {
             position: fixed; bottom: 20px; left: 20px; right: 20px;
             background: var(--glass); backdrop-filter: blur(30px);
@@ -27,48 +20,24 @@
         }
 
         .track-info { display: flex; align-items: center; gap: 15px; min-width: 200px; }
-        #cover { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #111; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #cover { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #111; }
         .track-text h3 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
 
         .controls { flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 20px; }
         .control-btns { display: flex; align-items: center; gap: 25px; margin-bottom: 10px; }
-        .btn-svg { background: transparent; border: none; cursor: pointer; fill: #fff; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
-        .btn-svg:hover { fill: var(--primary); }
-        
-        .play-btn-circle { 
-            width: 50px; height: 50px; background: #fff; border-radius: 50%; 
-            fill: #000 !important; box-shadow: 0 0 15px var(--primary-glow);
-        }
+        .btn-svg { background: transparent; border: none; cursor: pointer; fill: #fff; transition: 0.2s; display: flex; align-items: center; }
+        .play-btn-circle { width: 50px; height: 50px; background: #fff; border-radius: 50%; fill: #000 !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary-glow); }
 
         .progress-area { width: 100%; display: flex; align-items: center; gap: 12px; font-size: 11px; color: #888; }
         .custom-bar { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; }
         .fill { width: 0%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
 
-        /* VOLUME POPUP */
         .vol-container { position: relative; display: flex; align-items: center; justify-content: flex-end; width: 150px; }
-        
-        .vol-pop {
-            position: absolute; bottom: 60px; right: 0;
-            background: var(--glass); padding: 15px 10px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none; flex-direction: column; align-items: center;
-            animation: slideUp 0.3s ease;
-        }
+        .vol-pop { position: absolute; bottom: 60px; right: 0; background: var(--glass); padding: 15px 10px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: none; flex-direction: column; align-items: center; animation: slideUp 0.3s ease; }
         .vol-pop.show { display: flex; }
-        
-        .vol-pop input {
-            -webkit-appearance: none; width: 5px; height: 100px;
-            background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none;
-            writing-mode: bt-lr; /* Vertical */
-        }
-        .vol-pop input::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 15px; height: 15px;
-            background: var(--primary); border-radius: 50%; cursor: pointer;
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
+        .vol-pop input { -webkit-appearance: slider-vertical; width: 5px; height: 100px; accent-color: var(--primary); }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         @media (max-width: 850px) {
             .player { left: 10px; right: 10px; bottom: 10px; flex-direction: column; padding: 15px; border-radius: 25px; }
             .track-info { min-width: 100%; margin-bottom: 12px; }
@@ -78,18 +47,15 @@
     </style>
 </head>
 <body>
-
     <iframe src="pagina1.html" id="content-frame" name="main_frame"></iframe>
-
     <div class="player">
         <div class="track-info">
             <img id="cover" src="https://via.placeholder.com/50/111/00d4ff?text=SOᑌᘉᗞ" alt="">
             <div class="track-text">
                 <h3 id="now">Aguardando...</h3>
-                <p id="status" style="font-size: 11px; color: var(--primary); font-weight: 600;">STATUS: READY</p>
+                <p id="status" style="font-size: 11px; color: var(--primary); font-weight: 600;">READY</p>
             </div>
         </div>
-
         <div class="controls">
             <div class="control-btns">
                 <button class="btn-svg" onclick="prev()"><svg width="22" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
@@ -102,19 +68,12 @@
                 <span id="duration">0:00</span>
             </div>
         </div>
-
         <div class="vol-container">
-            <div class="vol-pop" id="volPop">
-                <input type="range" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)" style="-webkit-appearance: slider-vertical;">
-            </div>
-            <button class="btn-svg" onclick="toggleVol()">
-                <svg width="24" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            </button>
+            <div class="vol-pop" id="volPop"><input type="range" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)"></div>
+            <button class="btn-svg" onclick="toggleVol()"><svg width="24" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></button>
         </div>
     </div>
-
     <audio id="audio"></audio>
-
     <script>
         const playlist = [
             {name:"A Promessa", img:"imagens/imagem1.jpg", src:"musicas/musica1.mp3"},
@@ -131,62 +90,18 @@
             {name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg", src:"musicas/musica12.mp3"},
             {name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg", src:"musicas/musica13.mp3"}
         ];
-
-        let currentIndex = 0;
-        const audio = document.getElementById("audio");
-
-        function playMusic(i) {
-            currentIndex = i;
-            audio.src = playlist[currentIndex].src;
-            audio.play();
-            document.getElementById("now").innerText = playlist[currentIndex].name;
-            document.getElementById("cover").src = playlist[currentIndex].img;
-            document.getElementById("status").innerText = "TOCANDO AGORA";
-            updateIcon();
-        }
-
+        let currentIndex = 0; const audio = document.getElementById("audio");
+        function playMusic(i) { currentIndex = i; audio.src = playlist[currentIndex].src; audio.play(); document.getElementById("now").innerText = playlist[currentIndex].name; document.getElementById("cover").src = playlist[currentIndex].img; updateIcon(); }
         function toggle() { if(audio.src) audio.paused ? audio.play() : audio.pause(); updateIcon(); }
-        
-        function updateIcon() { 
-            document.getElementById("playIcon").innerHTML = audio.paused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
-        }
-
+        function updateIcon() { document.getElementById("playIcon").innerHTML = audio.paused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; }
         function next() { currentIndex = (currentIndex + 1) % playlist.length; playMusic(currentIndex); }
         function prev() { currentIndex = (currentIndex - 1 + playlist.length) % playlist.length; playMusic(currentIndex); }
-        
-        function toggleVol() {
-            const pop = document.getElementById("volPop");
-            pop.classList.toggle("show");
-            if(pop.classList.contains("show")) {
-                setTimeout(() => pop.classList.remove("show"), 5000);
-            }
-        }
-
+        function toggleVol() { const pop = document.getElementById("volPop"); pop.classList.toggle("show"); if(pop.classList.contains("show")) setTimeout(() => pop.classList.remove("show"), 5000); }
         function setVolume(v) { audio.volume = v; }
-
-        function seek(e) {
-            const bar = e.target.closest('.custom-bar');
-            const rect = bar.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pos * audio.duration;
-        }
-
-        audio.ontimeupdate = () => {
-            const pct = (audio.currentTime / audio.duration) * 100 || 0;
-            document.getElementById("bar-fill").style.width = pct + "%";
-            document.getElementById("current").innerText = format(audio.currentTime);
-            document.getElementById("duration").innerText = isNaN(audio.duration) ? "0:00" : format(audio.duration);
-        };
-
-        function format(s) {
-            let m = Math.floor(s/60); let sec = Math.floor(s%60);
-            return m + ":" + (sec < 10 ? "0"+sec : sec);
-        }
-        audio.onended = next;
-
-        window.addEventListener('message', (e) => {
-            if(e.data.type === 'PLAY') playMusic(e.data.index);
-        });
+        function seek(e) { const bar = e.target.closest('.custom-bar'); const rect = bar.getBoundingClientRect(); const pos = (e.clientX - rect.left) / rect.width; audio.currentTime = pos * audio.duration; }
+        audio.ontimeupdate = () => { const pct = (audio.currentTime / audio.duration) * 100 || 0; document.getElementById("bar-fill").style.width = pct + "%"; document.getElementById("current").innerText = format(audio.currentTime); document.getElementById("duration").innerText = isNaN(audio.duration) ? "0:00" : format(audio.duration); };
+        function format(s) { let m = Math.floor(s/60); let sec = Math.floor(s%60); return m + ":" + (sec < 10 ? "0"+sec : sec); }
+        audio.onended = next; window.addEventListener('message', (e) => { if(e.data.type === 'PLAY') playMusic(e.data.index); });
     </script>
 </body>
 </html>
