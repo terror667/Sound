@@ -3,101 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOᑌᘉᗞ | Solicitar Música</title>
+    <title>SOᑌᘉᗞ | Solicitar</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #00d4ff; 
-            --bg-dark: #050a10; 
-            --card-bg: rgba(255, 255, 255, 0.05); 
-            --glass: rgba(15, 25, 35, 0.98);
-        }
+        :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: radial-gradient(circle at bottom right, #0d2b3a, var(--bg-dark)); 
-            color: white; display: flex; min-height: 100vh; overflow-x: hidden; 
-        }
+        body { background: radial-gradient(circle at bottom right, #0d2b3a, var(--bg-dark)); color: white; display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
-            padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; transition: 0.4s;
-        }
+        .sidebar { width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; transition: 0.4s; }
         .logo { font-size: 26px; font-weight: 800; margin-bottom: 40px; text-align: center; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; transition: 0.3s; }
+        .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; }
         .nav-links li.active { background: var(--card-bg); color: var(--primary); }
-        .nav-links li:hover { color: #fff; background: rgba(255,255,255,0.08); }
 
-        /* MAIN */
-        .main { flex: 1; padding: 40px; padding-bottom: 150px; overflow-y: auto; }
-        h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
-        
-        /* BUSCA */
-        .search-container { margin-top: 30px; margin-bottom: 40px; max-width: 600px; }
-        .search-input { 
-            width: 100%; padding: 18px 25px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.1); 
-            background: rgba(255,255,255,0.05); color: white; outline: none; font-size: 16px; 
-            transition: 0.3s;
-        }
+        .main { flex: 1; padding: 40px; padding-bottom: 150px; }
+        .search-container { margin-top: 20px; margin-bottom: 40px; max-width: 600px; }
+        .search-input { width: 100%; padding: 18px 25px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; outline: none; font-size: 16px; }
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
 
-        /* GRID */
         .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .spotify-card { 
-            background: var(--card-bg); padding: 20px; border-radius: 25px; 
-            border: 1px solid rgba(255,255,255,0.03); text-align: center; transition: 0.3s;
-        }
-        .spotify-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .spotify-card img { width: 100%; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        
-        .btn-request { 
-            background: var(--primary); color: #000; border: none; padding: 12px; 
-            border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px;
-        }
+        .spotify-card { background: var(--card-bg); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+        .spotify-card img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
+        .btn-request { background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%; }
 
-        /* MODAL */
-        #modal { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
-            z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
-        }
-        .modal-box { 
-            background: #0a0f14; padding: 40px; border-radius: 30px; border: 1px solid var(--primary); 
-            width: 90%; max-width: 450px; text-align: center; 
-        }
-        .modal-box input { 
-            width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
-            background: #111; color: white; outline: none;
-        }
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-box { background: #0a0f14; padding: 40px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 450px; text-align: center; }
+        .modal-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #111; color: white; }
 
-        /* MOBILE MENU (3 traços) */
-        .menu-toggle { display: none; position: fixed; top: 20px; left: 20px; z-index: 10001; background: transparent; border: none; cursor: pointer; }
-        .ham-box { width: 30px; height: 24px; position: relative; }
-        .ham-line { width: 100%; height: 3px; background: #fff; position: absolute; transition: 0.4s; border-radius: 3px;}
-        .ham-line:nth-child(1) { top: 0; }
-        .ham-line:nth-child(2) { top: 10px; }
-        .ham-line:nth-child(3) { top: 20px; }
-        .active .ham-line:nth-child(1) { transform: translateY(10px) rotate(45deg); }
-        .active .ham-line:nth-child(2) { opacity: 0; }
-        .active .ham-line:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
-
-        @media (max-width: 850px) {
-            .sidebar { position: fixed; left: -260px; height: 100%; z-index: 9999; }
-            .sidebar.open { left: 0; }
-            .menu-toggle { display: block; }
-            .main { padding: 80px 20px; }
-            .results-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        }
+        @media (max-width: 850px) { .sidebar { display: none; } .main { padding: 80px 20px; } }
     </style>
 </head>
 <body>
 
-<button class="menu-toggle" onclick="toggleMenu()">
-    <div class="ham-box" id="ham"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></div>
-</button>
-
-<aside class="sidebar" id="side">
+<aside class="sidebar">
     <div class="logo">SOᑌᘉᗞ</div>
     <ul class="nav-links">
         <li onclick="location.href='pagina1.html'">🏠 Início</li>
@@ -108,71 +45,48 @@
 
 <main class="main">
     <h1>Peça sua música</h1>
-    <p style="color: #94a3b8;">Encontrou algo foda? Peça pra gente adicionar.</p>
+    <p style="color: #94a3b8;">Qual música falta aqui? Busque e solicite!</p>
 
     <div class="search-container">
-        <input type="text" class="search-input" id="search" placeholder="Busque por artista ou música..." onkeyup="searchSongs(this.value)">
+        <input type="text" class="search-input" placeholder="Digite o nome da música..." onkeyup="searchSongs(this.value)">
     </div>
 
     <div id="results" class="results-grid"></div>
-
-    <h2 style="margin-top: 50px; margin-bottom: 20px;">Meus Pedidos</h2>
-    <div id="wishlist" class="results-grid">
-        </div>
 </main>
 
 <div id="modal">
     <div class="modal-box">
-        <h3>Finalizar Pedido</h3>
-        <p style="color: #666; font-size: 13px; margin-top: 10px;">Enviaremos um e-mail automático assim que o som estiver no site.</p>
+        <h3>Quase lá!</h3>
+        <p style="color: #666; font-size: 13px; margin-top: 10px;">Informe seu e-mail. Vamos te avisar pessoalmente assim que o som estiver disponível.</p>
         
         <form action="https://formspree.io/f/xojylawj" method="POST">
-            <input type="hidden" name="musica_solicitada" id="songData">
-            <input type="email" name="email" placeholder="Seu melhor e-mail" required>
+            <input type="hidden" name="_next" value="sucesso.html">
+            <input type="hidden" name="Musica_Solicitada" id="songData">
+            
+            <input type="email" name="Email_do_Usuario" placeholder="Seu melhor e-mail" required>
             <button type="submit" class="btn-request">Confirmar Solicitação</button>
         </form>
         
-        <button onclick="closeModal()" style="background:none; border:none; color: #999; margin-top: 15px; cursor: pointer;">Voltar</button>
+        <button onclick="closeModal()" style="background:none; border:none; color: #999; margin-top: 15px; cursor: pointer;">Cancelar</button>
     </div>
 </div>
 
 <script>
-    function toggleMenu() {
-        document.getElementById('side').classList.toggle('open');
-        document.getElementById('ham').classList.toggle('active');
-    }
-
     function searchSongs(q) {
         if(q.length < 3) return;
-        const res = document.getElementById('results');
-        // Simulação Spotify
-        res.innerHTML = `
+        document.getElementById('results').innerHTML = `
             <div class="spotify-card">
-                <img src="https://via.placeholder.com/200/111/00d4ff?text=Preview">
+                <img src="https://via.placeholder.com/200/111/00d4ff?text=SOᑌᘉᗞ+Previw">
                 <h4>${q}</h4>
                 <button class="btn-request" onclick="openModal('${q}')">Solicitar</button>
             </div>
         `;
     }
-
     function openModal(song) {
         document.getElementById('songData').value = song;
         document.getElementById('modal').style.display = 'flex';
     }
-
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
-
-    // Fecha o menu ao clicar fora no mobile
-    window.onclick = function(event) {
-        const side = document.getElementById('side');
-        const ham = document.getElementById('ham');
-        if (window.innerWidth <= 850 && !side.contains(event.target) && !document.querySelector('.menu-toggle').contains(event.target)) {
-            side.classList.remove('open');
-            ham.classList.remove('active');
-        }
-    }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
 </script>
 </body>
 </html>
