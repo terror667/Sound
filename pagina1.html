@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: radial-gradient(circle at top right, #0d2b3a, var(--bg-dark)); color: white; display: flex; overflow-x: hidden; height: 100vh; }
+
+        /* HAMBURGUER ANIMADO */
+        .menu-toggle {
+            display: none; position: fixed; top: 20px; left: 20px; z-index: 10001;
+            background: transparent; border: none; cursor: pointer; width: 40px; height: 40px;
+        }
+        .ham-box { width: 30px; height: 24px; position: relative; }
+        .ham-line { 
+            width: 100%; height: 3px; background: #fff; position: absolute; 
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); border-radius: 3px;
+        }
+        .ham-line:nth-child(1) { top: 0; }
+        .ham-line:nth-child(2) { top: 10px; }
+        .ham-line:nth-child(3) { top: 20px; }
+
+        .active .ham-line:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .active .ham-line:nth-child(2) { opacity: 0; }
+        .active .ham-line:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .sidebar {
+            width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            padding: 40px 25px; transition: 0.4s; border-right: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; }
+        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
+
+        .main { flex: 1; padding: 40px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); padding: 15px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
+        .img-box { width: 100%; aspect-ratio: 1/1; border-radius: 15px; overflow: hidden; margin-bottom: 10px; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        @media (max-width: 850px) {
+            .menu-toggle { display: block; }
+            .sidebar { position: fixed; left: -260px; height: 100%; z-index: 10000; }
+            .sidebar.open { left: 0; }
+            .main { padding: 80px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+    <div class="ham-box" id="ham">
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+    </div>
+</button>
+
+<aside class="sidebar" id="side">
+    <h2 style="text-align:center; margin-bottom:30px;">SOᑌᘉᗞ</h2>
+    <ul class="nav-links">
+        <li class="active" onclick="location.href='pagina1.html'">🏠 Início</li>
+        <li onclick="location.href='pagina2.html'">📂 Biblioteca</li>
+    </ul>
+</aside>
+
+<main class="main">
+    <h1 style="margin-bottom:25px;">Vibe do momento</h1>
+    <div id="grid" class="grid"></div>
+</main>
+
+<script>
+    function toggleMenu() {
+        document.getElementById('side').classList.toggle('open');
+        document.getElementById('ham').classList.toggle('active');
+    }
+
+    const playlist = [
+        {name:"A Promessa", img:"imagens/imagem1.jpg"},
+        {name:"Se Hoje Me Tocas", img:"imagens/imagem2.jpg"},
+        {name:"Tu Que Habitas no Jardim", img:"imagens/imagem3.jpg"},
+        {name:"É ele", img:"imagens/imagem4.jpg"},
+        {name:"Yeshua", img:"imagens/imagem5.jpg"},
+        {name:"Não mais escravos", img:"imagens/imagem6.jpg"},
+        {name:"Me ama", img:"imagens/imagem7.jpg"},
+        {name:"Mesmo sem entender", img:"imagens/imagem8.jpg"},
+        {name:"Quando o mundo cai ao meu redor", img:"imagens/imagem9.jpg"},
+        {name:"Me leva pra casa", img:"imagens/imagem10.jpg"},
+        {name:"Uma nova história", img:"imagens/imagem11.jpg"},
+        {name:"Nunca foi sobre nós", img:"imagens/imagem12.jpg"},
+        {name:"Me ajuda a melhorar", img:"imagens/imagem13.jpg"}
+    ];
+
+    const grid = document.getElementById("grid");
+    playlist.forEach((m, i) => {
+        grid.innerHTML += `
+            <div class="card" onclick="play(${i})">
+                <div class="img-box"><img src="${m.img}" onerror="this.src='https://via.placeholder.com/150'"></div>
+                <h4 style="font-size:13px;">${m.name}</h4>
+            </div>`;
+    });
+
+    function play(i) {
+        window.parent.postMessage({type: 'PLAY', index: i}, '*');
+    }
+</script>
+</body>
+</html>
