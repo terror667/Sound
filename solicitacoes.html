@@ -10,60 +10,133 @@
         :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: radial-gradient(circle at bottom right, #0d2b3a, var(--bg-dark)); color: white; display: flex; min-height: 100vh; overflow-x: hidden; }
-        .menu-toggle { display: none; position: fixed; top: 20px; left: 20px; z-index: 10001; background: transparent; border: none; cursor: pointer; }
-        .ham-box { width: 30px; height: 24px; position: relative; }
-        .ham-line { width: 100%; height: 3px; background: #fff; position: absolute; transition: 0.4s; border-radius: 3px;}
-        .ham-line:nth-child(1) { top: 0; } .ham-line:nth-child(2) { top: 10px; } .ham-line:nth-child(3) { top: 20px; }
-        .active .ham-line:nth-child(1) { transform: translateY(10px) rotate(45deg); }
-        .active .ham-line:nth-child(2) { opacity: 0; }
-        .active .ham-line:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
-        .sidebar { width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05); }
+
+        .sidebar { width: 260px; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s; }
+        .logo { font-size: 26px; font-weight: 800; margin-bottom: 40px; text-align: center; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; }
         .nav-links li.active { background: var(--card-bg); color: var(--primary); }
+
         .main { flex: 1; padding: 40px; padding-bottom: 120px; overflow-y: auto; }
-        .search-input { width: 100%; max-width: 600px; padding: 18px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; outline: none; margin-bottom: 30px; }
+        .search-input { width: 100%; max-width: 600px; padding: 18px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; outline: none; margin-bottom: 30px; font-size: 16px; transition: 0.3s; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+        
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        .spotify-card { background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); text-align: center; transition: 0.3s; }
+        .spotify-card img { width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin-bottom: 10px; object-fit: cover; box-shadow: 0 8px 15px rgba(0,0,0,0.3); }
+        .spotify-card h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        .spotify-card p { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+        .btn-request { background: var(--primary); color: #000; border: none; padding: 10px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-request:hover { transform: scale(1.05); }
+
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-box { background: #0a0f14; padding: 40px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
-        .btn-request { background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; }
-        @media (max-width: 850px) { .menu-toggle { display: block; } .sidebar { position: fixed; left: -260px; height: 100%; z-index: 10000; transition: 0.4s; } .sidebar.open { left: 0; } .main { padding: 80px 20px; } }
+        .modal-box { background: #0a0f14; padding: 35px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
+        .modal-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid #333; background: #111; color: white; text-align: center; outline: none; }
+
+        @media (max-width: 850px) { .sidebar { display: none; } .main { padding: 80px 20px; } }
     </style>
 </head>
 <body>
-<button class="menu-toggle" onclick="toggleMenu()"><div class="ham-box" id="ham"><div class="ham-line"></div><div class="ham-line"></div><div class="ham-line"></div></div></button>
-<aside class="sidebar" id="side">
-    <h2 style="text-align:center; margin-bottom:30px;">SOᑌᘉᗞ</h2>
+
+<aside class="sidebar">
+    <div class="logo">SOᑌᘉᗞ</div>
     <ul class="nav-links">
         <li onclick="location.href='pagina1.html'">🏠 Início</li>
         <li onclick="location.href='pagina2.html'">📂 Biblioteca</li>
         <li class="active">🔍 Solicitar</li>
     </ul>
 </aside>
+
 <main class="main">
-    <h1>Peça seu som</h1>
-    <input type="text" class="search-input" placeholder="Buscar música..." onkeyup="searchSongs(this.value)">
-    <div id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;"></div>
+    <h1>Buscar no Spotify</h1>
+    <p style="color: #94a3b8; margin-bottom: 20px;">Pesquise músicas reais e peça para o Luan adicionar.</p>
+    <input type="text" id="query" class="search-input" placeholder="O que você quer ouvir?" onkeyup="searchSpotify()">
+    <div id="results" class="results-grid"></div>
 </main>
+
 <div id="modal">
     <div class="modal-box">
-        <h3 id="displaySong"></h3>
-        <input type="email" id="userEmail" placeholder="Seu e-mail" style="width:100%; padding:15px; margin:20px 0; border-radius:12px; border:1px solid #333; background:#111; color:white; text-align:center;">
-        <button id="sendBtn" class="btn-request" onclick="sendRequest()">Enviar Pedido</button>
+        <h3 id="displaySong" style="color: var(--primary);"></h3>
+        <p style="margin-top:10px; font-size: 13px; color: #888;">Informe seu e-mail para receber o aviso.</p>
+        <input type="email" id="userEmail" placeholder="seu@email.com" required>
+        <button id="sendBtn" class="btn-request" onclick="sendRequest()">Enviar Solicitação</button>
         <button onclick="closeModal()" style="background:none; border:none; color:#999; margin-top:15px; cursor:pointer;">Cancelar</button>
     </div>
 </div>
+
 <script>
-    (function(){ emailjs.init("SUA_PUBLIC_KEY"); })();
+    // CREDENCIAIS EMAILJS
+    (function(){ emailjs.init("Z1mNDpBSBEuhfpaF"); })();
+
+    // CREDENCIAIS SPOTIFY
+    const clientId = 'b9c738e0a6ae4a26b4e451106c4a4b8f';
+    const clientSecret = 'cf1e22369b9b4101859f58fd5cd1841d'; 
+    let spotifyToken = '';
+
+    // Pega o Token de acesso
+    async function getToken() {
+        try {
+            const response = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+                },
+                body: 'grant_type=client_credentials'
+            });
+            const data = await response.json();
+            spotifyToken = data.access_token;
+        } catch (err) { console.error("Erro no token", err); }
+    }
+
+    // Busca as músicas
+    async function searchSpotify() {
+        const q = document.getElementById('query').value;
+        if (q.length < 3) return;
+        if (!spotifyToken) await getToken();
+
+        try {
+            const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=12`, {
+                headers: { 'Authorization': 'Bearer ' + spotifyToken }
+            });
+            const data = await response.json();
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+
+            data.tracks.items.forEach(track => {
+                const songName = track.name.replace(/'/g, "");
+                const artistName = track.artists[0].name.replace(/'/g, "");
+                results.innerHTML += `
+                    <div class="spotify-card">
+                        <img src="${track.album.images[0].url}">
+                        <h4>${track.name}</h4>
+                        <p>${track.artists[0].name}</p>
+                        <button class="btn-request" onclick="openModal('${songName} - ${artistName}')">Solicitar</button>
+                    </div>
+                `;
+            });
+        } catch (err) { console.error("Erro na busca", err); }
+    }
+
     let curSong = "";
-    function toggleMenu() { document.getElementById('side').classList.toggle('open'); document.getElementById('ham').classList.toggle('active'); }
-    function searchSongs(q) { if(q.length < 3) return; document.getElementById('results').innerHTML = `<div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:25px; text-align:center;"><h4>${q}</h4><button class="btn-request" onclick="openModal('${q}')">Solicitar</button></div>`; }
     function openModal(s) { curSong = s; document.getElementById('displaySong').innerText = s; document.getElementById('modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
     function sendRequest() {
-        const email = document.getElementById('userEmail').value; const btn = document.getElementById('sendBtn');
+        const email = document.getElementById('userEmail').value;
         if(!email.includes('@')) return alert("E-mail inválido!");
-        btn.innerText = "Enviando..."; btn.disabled = true;
-        emailjs.send('SEU_SERVICE_ID', 'SEU_TEMPLATE_ID', { musica: curSong, email: email })
-            .then(() => { alert("Pedido enviado!"); location.href = 'pagina1.html'; }, (err) => { alert("Erro!"); btn.innerText = "Tentar novamente"; btn.disabled = false; });
+        const btn = document.getElementById('sendBtn');
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
+
+        emailjs.send('service_k5ft1lw', 'template_bti0wvb', { musica: curSong, email: email })
+            .then(() => { 
+                alert("Sucesso! O Luan recebeu seu pedido."); 
+                location.href = 'pagina1.html'; 
+            }, () => { 
+                alert("Erro ao enviar!"); 
+                btn.innerText = "Tentar novamente";
+                btn.disabled = false;
+            });
     }
 </script>
 </body>
