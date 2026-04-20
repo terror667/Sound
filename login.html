@@ -8,7 +8,7 @@
 <style>
 body {
   background: linear-gradient(135deg, #050a10, #0a1a25);
-  font-family: 'Inter', sans-serif;
+  font-family: Arial;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,6 @@ input {
   margin: 10px 0;
   border-radius: 12px;
   border: none;
-  outline: none;
   background: #0f1f2a;
   color: white;
 }
@@ -42,11 +41,12 @@ button {
   margin-top: 10px;
   border-radius: 12px;
   border: none;
-  background: #00d4ff;
-  color: black;
   font-weight: bold;
   cursor: pointer;
 }
+
+.login { background: #00d4ff; color: black; }
+.google { background: white; color: black; }
 
 .link {
   margin-top: 15px;
@@ -65,14 +65,15 @@ button {
   <input id="email" placeholder="Email">
   <input id="senha" type="password" placeholder="Senha">
 
-  <button onclick="login()">Entrar</button>
+  <button class="login" onclick="login()">Entrar</button>
+  <button class="google" onclick="loginGoogle()">Entrar com Google</button>
 
   <span class="link" onclick="goRegister()">Criar conta</span>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } 
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
 from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -84,8 +85,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// EMAIL LOGIN
 window.login = () => {
   signInWithEmailAndPassword(auth, email.value, senha.value)
+    .then(() => window.location.href = "index.html")
+    .catch(e => alert(e.message));
+};
+
+// GOOGLE LOGIN
+const provider = new GoogleAuthProvider();
+
+window.loginGoogle = () => {
+  signInWithPopup(auth, provider)
     .then(() => window.location.href = "index.html")
     .catch(e => alert(e.message));
 };
