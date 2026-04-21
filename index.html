@@ -1,544 +1,295 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOᑌᘉᗞ | Ultra Premium</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundPremiun - Sua Música, Seu Jeito</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1DB954; /* Spotify green */
+            --secondary-color: #191414; /* Dark black */
+            --text-light: #FFFFFF;
+            --text-dark: #B3B3B3;
+            --button-hover: #1ED760;
+            --bg-gradient-start: #121212;
+            --bg-gradient-end: #000000;
+        }
 
-<!-- Google Fonts: Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-<!-- EmailJS CDN -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function() {
-      // Inicializa o EmailJS com sua chave pública
-      // <<< SUBSTITUA PELA SUA CHAVE PÚBLICA DO EmailJS >>>
-      emailjs.init({
-         publicKey: "SUA_CHAVE_API_EMAILJS",
-      });
-   })();
-</script>
+        .header {
+            background-color: var(--secondary-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-<style>
-/* Variáveis CSS */
-:root {
-  --primary: #00d4ff;
-  --bg-dark: #050a10;
-  --glass: rgba(15, 25, 35, 0.98);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-light: #f0f0f0;
-  --text-muted: #888;
-  --button-hover: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --sidebar-text: #94a3b8;
-}
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
 
-/* Reset Básico e Fontes */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-  -webkit-tap-highlight-color: transparent; /* Remove o highlight azul no toque mobile */
-}
+        .header .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
 
-body {
-  width: 100%;
-  min-height: 100vh;
-  /* Fundo de gradiente radial elegante */
-  background: radial-gradient(circle at top right, #0d2b3a, var(--bg-dark));
-  color: var(--text-light);
-  display: flex; /* Para layout de sidebar e main */
-  overflow-x: hidden; /* Evita scroll horizontal indesejado */
-  position: relative; /* Para o player fixed */
-}
+        .header .logo span {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
 
-/* Esconde o scrollbar em navegadores webkit */
-body::-webkit-scrollbar {
-    display: none;
-}
-body {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
+        .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
-/* ----- Layout Geral ----- */
-.menu-toggle {
-    display: none; /* Escondido por padrão, visível em mobile */
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 10001;
-    background: transparent; /* Corrigido para transparente */
-    border: none;
-    cursor: pointer;
-    font-size: 24px; /* Aumentado para melhor toque */
-    color: var(--primary); /* Corrigido para cor primária */
-}
+        .nav-menu ul li {
+            margin-left: 30px;
+        }
 
-.ham-box {
-    width: 30px;
-    height: 24px;
-    position: relative;
-}
+        .nav-menu ul li a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
 
-.ham-line {
-    width: 100%;
-    height: 3px;
-    background: var(--primary); /* Corrigido para cor primária */
-    position: absolute;
-    transition: 0.4s;
-    border-radius: 3px;
-}
+        .nav-menu ul li a:hover {
+            color: var(--primary-color);
+        }
 
-.ham-line:nth-child(1) { top: 0; }
-.ham-line:nth-child(2) { top: 10px; }
-.ham-line:nth-child(3) { top: 20px; }
+        .auth-buttons a {
+            background-color: transparent;
+            color: var(--text-light);
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+            margin-left: 15px;
+        }
 
-.active .ham-line:nth-child(1) { transform: translateY(10px) rotate(45deg); }
-.active .ham-line:nth-child(2) { opacity: 0; }
-.active .ham-line:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+        .auth-buttons .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-.sidebar {
-  width: 260px;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(20px);
-  padding: 40px 25px;
-  border-right: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.4s ease;
-  flex-shrink: 0; /* Impede que a sidebar encolha */
-  display: flex;
-  flex-direction: column;
-}
+        .auth-buttons .signup-btn {
+            background-color: var(--primary-color);
+        }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: var(--primary);
-  font-size: 28px;
-  text-shadow: 0 0 10px var(--primary);
-}
+        .auth-buttons .signup-btn:hover {
+            background-color: var(--button-hover);
+        }
 
-.nav-links {
-  list-style: none;
-  flex-grow: 1; /* Ocupa espaço disponível */
-}
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 70vh; /* Adjust as needed */
+            padding: 0 20px;
+            background: url('https://source.unsplash.com/random/1600x900/?music,studio') no-repeat center center/cover;
+            position: relative;
+            z-index: 1;
+        }
 
-.nav-links li {
-  padding: 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  color: var(--sidebar-text);
-  margin-bottom: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-}
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
 
-.nav-links li:hover:not(.active) {
-  background: rgba(255,255,255,0.05);
-  color: var(--text-light);
-}
+        .hero-section h1 {
+            font-size: 4.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
 
-.nav-links li.active {
-  background: var(--card-bg);
-  color: var(--primary);
-  box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
-}
+        .hero-section p {
+            font-size: 1.5em;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+            max-width: 700px;
+        }
 
-/* Conteúdo Principal */
-main {
-  flex-grow: 1; /* Permite que o conteúdo principal ocupe o espaço restante */
-  padding: 40px;
-  padding-bottom: 120px; /* Espaço para o player fixo */
-  overflow-y: auto; /* Scroll para o conteúdo principal */
-}
+        .hero-section .cta-button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2em;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-/* Estilo para as seções de conteúdo carregadas dinamicamente */
-.content-area { /* Alterado de #main-content para .content-area para flexibilidade */
-    background: rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    border-radius: 15px;
-    margin-top: 0; /* Já dentro do main com padding */
-    line-height: 1.6;
-}
+        .hero-section .cta-button:hover {
+            background-color: var(--button-hover);
+        }
 
-.content-area h1, .content-area h2 {
-  color: var(--primary);
-  margin-bottom: 25px;
-  font-size: 2em;
-  text-align: left;
-}
+        .features-section {
+            padding: 80px 40px;
+            text-align: center;
+        }
 
-.content-area p {
-  margin-bottom: 15px;
-  color: var(--text-light);
-}
+        .features-section h2 {
+            font-size: 3em;
+            margin-bottom: 60px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
 
-/* Grid de Músicas (Home) */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
-}
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.card {
-  background: var(--card-bg);
-  padding: 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-  text-align: center;
-}
+        .feature-item {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.card:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-}
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+        }
 
-.img-box {
-  width: 100%;
-  aspect-ratio: 1/1;
-  border-radius: 15px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-}
+        .feature-item i {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
 
-.img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+        .feature-item h3 {
+            font-size: 1.8em;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
 
-.card h4 {
-    font-size: 14px;
-    color: var(--text-light);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .feature-item p {
+            color: var(--text-dark);
+            font-size: 1.1em;
+        }
 
+        .footer {
+            background-color: var(--secondary-color);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
 
-/* ----- Player de Música ----- */
-.player {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: var(--glass);
-  backdrop-filter: blur(30px);
-  padding: 15px 30px;
-  border-radius: 30px;
-  border: 1px solid var(--glass-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 9999;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha em telas pequenas */
-  gap: 15px; /* Espaçamento entre os elementos do player */
-}
+        .footer .social-links a {
+            color: var(--text-dark);
+            font-size: 1.5em;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
 
-.track-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  min-width: 180px; /* Ajuste para telas pequenas */
-  flex-basis: 30%; /* Ocupa 30% da largura em telas maiores */
-  flex-grow: 1; /* Permite crescimento */
-}
+        .footer .social-links a:hover {
+            color: var(--primary-color);
+        }
 
-#cover {
-  width: 60px; /* Aumentado para melhor visualização */
-  height: 60px; /* Aumentado para melhor visualização */
-  border-radius: 12px;
-  Sem resposta
-.controls {
-  flex: 1; /* Ocupa o espaço restante */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 500px;
-  margin: 0 20px;
-  min-width: 280px; /* Mínimo para os controles */
-}
+        .footer p {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="SoundPremiun Logo">
+            <span>SoundPremiun</span>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="pagina1.html">Músicas</a></li>
+                <li><a href="pagina2.html">Biblioteca</a></li>
+                <li><a href="solicitacoes.html">Solicitações</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="login-btn">Entrar</a>
+            <a href="register.html" class="signup-btn">Registrar</a>
+        </div>
+    </header>
 
-.control-btns {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 10px;
-}
+    <main>
+        <section class="hero-section">
+            <h1>SoundPremiun</h1>
+            <p>Sua plataforma definitiva para descobrir, ouvir e compartilhar músicas incríveis.</p>
+            <a href="pagina1.html" class="cta-button">Explorar Músicas</a>
+        </section>
 
-.btn-svg {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  fill: var(--text-light);
-  display: flex;
-  align-items: center;
-  font-size: 24px; /* Tamanho dos ícones */
-  transition: transform 0.2s ease, color 0.2s ease;
-  color: var(--text-light); /* Para emojis como botões */
-}
+        <section class="features-section">
+            <h2>Por que SoundPremiun?</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-headphones-alt"></i>
+                    <h3>Qualidade de Áudio Superior</h3>
+                    <p>Desfrute de suas músicas favoritas com a melhor qualidade de som.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-music"></i>
+                    <h3>Biblioteca Personalizada</h3>
+                    <p>Crie e gerencie suas próprias playlists e organize sua coleção.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-search"></i>
+                    <h3>Descoberta Fácil</h3>
+                    <p>Encontre novas faixas e artistas com nosso sistema de busca intuitivo.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-.btn-svg:hover {
-  transform: scale(1.1);
-  color: var(--primary);
-}
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2026 SoundPremiun. Todos os direitos reservados.</p>
+    </footer>
 
-.play-btn-circle {
-  width: 55px; /* Aumentado */
-  height: 55px; /* Aumentado */
-  background: var(--primary);
-  border-radius: 50%;
-  fill: var(--bg-dark) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px; /* Tamanho do ícone de play/pause */
-  color: var(--bg-dark); /* Para emojis */
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.play-btn-circle:hover {
-  background: #fff;
-  transform: scale(1.05);
-}
-
-.progress-area {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.custom-bar {
-  flex: 1;
-  height: 6px;
-  background: var(--glass-border);
-  border-radius: 10px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.fill {
-  width: 0%;
-  height: 100%;
-  background: var(--primary);
-  transition: width 0.1s linear; /* Animação suave para o preenchimento */
-}
-
-/* ----- Seção de Contato (EmailJS) ----- */
-.contact-section {
-    max-width: 600px; /* Limita a largura do formulário */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.contact-section h2 {
-    color: var(--primary);
-    margin-bottom: 25px;
-    text-align: center;
-    font-size: 2em;
-}
-
-.contact-form label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--text-light);
-    font-weight: 600;
-}
-
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid var(--glass-border);
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    color: var(--text-light);
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.contact-form input[type="text"]:focus,
-.contact-form input[type="email"]:focus,
-.contact-form textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary);
-}
-
-.contact-form textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.contact-form button[type="submit"] {
-    background: var(--primary);
-    color: var(--bg-dark);
-    padding: 12px 25px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 800;
-    width: 100%;
-    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.contact-form button[type="submit"]:hover {
-    background: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
-}
-
-.form-message {
-    margin-top: 15px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.form-message.success {
-    color: #4CAF50; /* Verde para sucesso */
-}
-
-.form-message.error {
-    color: #f44336; /* Vermelho para erro */
-}
-
-/* ----- Seção de Solicitação de Música (itunes) ----- */
-.request-section .search-input {
-    width: 100%; max-width: 600px; padding: 18px 25px; border-radius: 35px;
-    border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.1);
-    color: white; outline: none; margin-bottom: 30px; font-size: 16px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block; /* Para centralizar com max-width */
-}
-.request-section .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
-
-.request-section .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
-}
-.request-section .card { /* Reutiliza estilos do .card, mas específico para requests */
-    background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); text-align: center; animation: fadeIn 0.4s ease;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.request-section .card img { width: 100%; border-radius: 15px; margin-bottom: 12px; aspect-ratio: 1/1; object-fit: cover; }
-.request-section .card h3 { font-size: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.request-section .card p { font-size: 11px; color: #888; margin-bottom: 15px; }
-
-.request-section .btn-play { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
-.request-section .btn-request { background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; }
-
-
-#modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10002; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-.modal-box { background: #0a0f14; padding: 35px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
-.modal-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; text-align: center; font-size: 16px; }
-
-/* ----- Rodapé ----- */
-footer {
-  text-align: center;
-  padding: 25px;
-  margin-top: 50px;
-  color: var(--text-muted);
-  font-size: 14px;
-  border-top: 1px solid var(--glass-border);
-}
-
-
-/* ----- Media Queries para Responsividade ----- */
-@media (max-width: 850px) {
-  .menu-toggle { display: block; }
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    z-index: 10000;
-    transform: translateX(-100%); /* Escondida por padrão em mobile */
-  }
-  .sidebar.open {
-    transform: translateX(0); /* Abre a sidebar */
-  }
-  main {
-    padding: 80px 20px 120px 20px; /* Mais espaço no topo para o toggle */
-    margin-left: 0; /* Remove a margem da sidebar */
-  }
-  .player {
-    flex-direction: column;
-    align-items: center;
-    padding: 15px 15px;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    border-radius: 20px;
-  }
-  .track-info {
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .track-text h3 {
-    max-width: 200px;
-  }
-  .controls {
-    width: 100%;
-    margin: 0;
-  }
-  .control-btns {
-    gap: 20px;
-  }
-  /* Header em mobile */
-  header { /* Este header foi removido da estrutura, mas mantive o media query por precaução */
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px 20px;
-    position: relative; /* Ajustado para não fixar o header */
-  }
-  header h1 {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .player {
-    padding: 10px;
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-  }
-  .track-info {
-    flex-direction: column;
-    text-align: center;
-  }
-  #cover {
-    width: 50px;
-    height: 50px;
-  }
-  .track-text h3 {
-    font-size: 14px;
-    max-width: 150px;
-  }
-  .control-btns {
-    gap: 15px;
-  }
-  .btn-svg {
-    font-size: 20px;
-  }
-  .play-btn-Sem resposta
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
