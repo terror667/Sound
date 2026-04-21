@@ -154,7 +154,7 @@ main {
 }
 
 /* Estilo para as seções de conteúdo carregadas dinamicamente */
-.content-section {
+.content-area { /* Alterado de #main-content para .content-area para flexibilidade */
     background: rgba(0, 0, 0, 0.3);
     padding: 30px;
     border-radius: 15px;
@@ -162,14 +162,14 @@ main {
     line-height: 1.6;
 }
 
-.content-section h1, .content-section h2 {
+.content-area h1, .content-area h2 {
   color: var(--primary);
   margin-bottom: 25px;
   font-size: 2em;
   text-align: left;
 }
 
-.content-section p {
+.content-area p {
   margin-bottom: 15px;
   color: var(--text-light);
 }
@@ -323,28 +323,7 @@ main {
 
 .play-btn-circle:hover {
   background: #fff;
-  transform: scale(1.05);
-}
-
-.progress-area {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.custom-bar {
-  flex: 1;
-  height: 6px;
-  background: var(--glass-border);
-  border-radius: 10px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
+  transform: scale(1.0Sem resposta
 .fill {
   width: 0%;
   height: 100%;
@@ -457,5 +436,292 @@ footer {
     transform: translateX(-100%); /* Escondida por padrão em mobile */
   }
   .sidebar.open {
-    transform:Sem resposta
+    transform: translateX(0); /* Abre a sidebar */
+  }
+  main {
+    padding: 80px 20px 120px 20px; /* Mais espaço no topo para o toggle */
+    margin-left: 0; /* Remove a margem da sidebar */
+  }
+  .player {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 15px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    border-radius: 20px;
+  }
+  .track-info {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .track-text h3 {
+    max-width: 200px;
+  }
+  .controls {
+    width: 100%;
+    margin: 0;
+  }
+  .control-btns {
+    gap: 20px;
+  }
+  /* Header em mobile */
+  header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+    position: relative; /* Ajustado para não fixar o header */
+  }
+  header h1 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player {
+    padding: 10px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+  }
+  .track-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  #cover {
+    width: 50px;
+    height: 50px;
+  }
+  .track-text h3 {
+    font-size: 14px;
+    max-width: 150px;
+  }
+  .control-btns {
+    gap: 15px;
+  }
+  .btn-svg {
+    font-size: 20px;
+  }
+  .play-btn-circle {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+  }
+  .progress-area {
+    font-size: 10px;
+    gap: 8px;
+  }
+  .sidebar {
+      padding: 20px 15px;
+  }
+  .sidebar h2 {
+      font-size: 24px;
+  }
+  .nav-links li {
+      padding: 12px;
+  }
+  main {
+      padding: 70px 10px 100px 10px;
+  }
+  .content-area {
+      padding: 20px;
+  }
+  .content-area h1, .content-area h2 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+  }
+  .grid {
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 15px;
+  }
+  .card {
+      padding: 10px;
+  }
+  .card h4 {
+      font-size: 12px;
+  }
+  .contact-section {
+      padding: 20px;
+  }
+  .contact-form label,
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form button {
+      font-size: 14px;
+      padding: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Firebase Core & Auth CDN -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; // Versão atualizada
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// Sua configuração do Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
+  authDomain: "soundpremiun-6f32c.firebaseapp.com",
+  projectId: "soundpremiun-6f32c",
+  storageBucket: "soundpremiun-6f32c.firebasestorage.app",
+  messagingSenderId: "627077390996",
+  appId: "1:627077390996:web:4daa434fbeddfe10f60a81"
+};
+
+// Inicializa o Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Função para manipular o estado de autenticação
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html"; // Certifique-se de ter um arquivo login.html
+  } else {
+    // Se o usuário estiver logado, carregue o conteúdo inicial (Home)
+    loadContent('home');
+  }
+});
+
+// LOGOUT GLOBAL: Função acessível globalmente para o botão "Sair"
+window.logout = () => {
+  signOut(auth).then(() => {
+    window.location.href = "login.html";
+  }).catch((error) => {
+    console.error("Erro ao fazer logout:", error);
+    alert("Erro ao fazer logout. Tente novamente.");
+  });
+};
+</script>
+
+<!-- Botão de Menu para Mobile -->
+<button class="menu-toggle" onclick="toggleMenu()">
+    <div class="ham-box" id="ham">
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+    </div>
+</button>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="side">
+    <h2>SOᑌᘉᗞ</h2>
+    <ul class="nav-links">
+        <li id="nav-home" class="active" onclick="loadContent('home')">🏠 Início</li>
+        <li id="nav-library" onclick="loadContent('library')">📂 Biblioteca</li>
+        <li id="nav-request" onclick="loadContent('request')">✨ Solicitar</li>
+        <li id="nav-contact" onclick="loadContent('contact')">📧 Contato</li>
+    </ul>
+</aside>
+
+<!-- Conteúdo Principal -->
+<main>
+    <div id="content-area" class="content-area">
+        <!-- O conteúdo será carregado aqui dinamicamente -->
+    </div>
+</main>
+
+<!-- Player de Música -->
+<div class="player">
+    <div class="track-info">
+        <img id="cover" src="https://via.placeholder.com/60/111/00d4ff?text=SOᑌᘉᗞ" alt="Capa da Música">
+        <div class="track-text">
+            <h3 id="now">Aguardando...</h3>
+            <p id="status">READY</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-btns">
+            <button class="btn-svg" onclick="prev()">⏮</button>
+            <button class="btn-svg play-btn-circle" onclick="toggle()">▶</button>
+            <button class="btn-svg" onclick="next()">⏭</button>
+        </div>
+
+        <div class="progress-area">
+            <span id="current">0:00</span>
+            <div class="custom-bar" onclick="seek(event)">
+                <div class="fill" id="bar-fill"></div>
+            </div>
+            <span id="duration">0:00</span>
+        </div>
+    </div>
+</div>
+
+<audio id="audio"></audio>
+
+<!-- Botão Sair - Movido para o topo direito para melhor visibilidade e consistência -->
+<button onclick="logout()" class="logout-btn" style="position:fixed;top:20px;right:20px;z-index:99999;">Sair</button>
+
+<!-- Rodapé -->
+<footer>
+    <p>&copy; 2024 SOᑌᘉᗞ | Ultra Premium. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+// --- Menu Toggle para Mobile ---
+function toggleMenu() {
+    document.getElementById('side').classList.toggle('open');
+    document.getElementById('ham').classList.toggle('active');
+}
+
+// --- Conteúdo Dinâmico das Páginas (SPA) ---
+const pageContents = {
+    home: `
+        <section class="content-area">
+            <h1>Vibe do momento</h1>
+            <div id="grid" class="grid"></div>
+        </section>
+    `,
+    library: `
+        <section class="content-area">
+            <h2>Sua Biblioteca</h2>
+            <p>Aqui você pode gerenciar suas músicas favoritas, playlists e downloads.</p>
+            <p>Em breve, mais recursos para organizar sua coleção musical!</p>
+        </section>
+    `,
+    request: `
+        <section class="content-area">
+            <h2>Solicitar Música</h2>
+            <p>Tem uma música em mente que você gostaria de ver na nossa plataforma?</p>
+            <p>Use o formulário de contato para nos enviar suas sugestões ou use o formulário específico de solicitação.</p>
+            <p>Aguarde em breve uma seção dedicada para enviar suas solicitações de novas músicas!</p>
+        </section>
+    `,
+    contact: `
+        <section class="content-area contact-section">
+            <h2>Fale Conosco</h2>
+            <form id="contact-form" class="contact-form">
+                <label for="user_name">Seu Nome:</label>
+                <input type="text" id="user_name" name="user_name" required>
+
+                <label for="user_email">Seu Email:</label>
+                <input type="email" id="user_email" name="user_email" required>
+
+                <label for="message">Mensagem:</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Enviar Mensagem</button>
+                <p id="form-message" class="form-message"></p>
+            </form>
+        </section>
+    `
+};
+
+function loadContent(pageName) {
+    const contentArea = document.getElementById('content-area');
+    const navLinks = document.querySelectorAll('.nav-links li');
+
+    // Remove a classe 'active' de todos os links e adiciona ao clicado
+    navLinks.forEach(link => link.classList.remove('active'));
+    document.getElementById(`nav-${pageName}`).classList.add('active');
+
+    contentArea.innerHTML = pageContents[pageName];
+
+    // Se for a página Home, renderiza a grid de músicas
+    if (pageName === 'home') {
+        Sem resposta
 
