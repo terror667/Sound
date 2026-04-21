@@ -13,8 +13,9 @@
 <script type="text/javascript">
    (function() {
       // Inicializa o EmailJS com sua chave pública
+      // <<< SUBSTITUA PELA SUA CHAVE PÚBLICA DO EmailJS >>>
       emailjs.init({
-         publicKey: "SUA_CHAVE_API_EMAILJS", // <<< SUBSTITUA PELA SUA CHAVE PÚBLICA DO EmailJS
+         publicKey: "SUA_CHAVE_API_EMAILJS",
       });
    })();
 </script>
@@ -39,6 +40,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Remove o highlight azul no toque mobile */
 }
 
 body {
@@ -68,9 +70,11 @@ body {
     top: 20px;
     left: 20px;
     z-index: 10001;
-    background: transparent;
+    background: transparent; /* Corrigido para transparente */
     border: none;
     cursor: pointer;
+    font-size: 24px; /* Aumentado para melhor toque */
+    color: var(--primary); /* Corrigido para cor primária */
 }
 
 .ham-box {
@@ -82,7 +86,7 @@ body {
 .ham-line {
     width: 100%;
     height: 3px;
-    background: #fff;
+    background: var(--primary); /* Corrigido para cor primária */
     position: absolute;
     transition: 0.4s;
     border-radius: 3px;
@@ -174,7 +178,7 @@ main {
   color: var(--text-light);
 }
 
-/* Grid de Músicas */
+/* Grid de Músicas (Home) */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -253,26 +257,7 @@ main {
   width: 60px; /* Aumentado para melhor visualização */
   height: 60px; /* Aumentado para melhor visualização */
   border-radius: 12px;
-  object-fit: cover;
-  background: #111;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-}
-
-.track-text h3 {
-  font-size: 16px; /* Aumentado */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px; /* Ajustado */
-  color: var(--text-light);
-}
-
-.track-text p {
-  font-size: 12px; /* Aumentado */
-  color: var(--primary);
-  font-weight: 600;
-}
-
+  Sem resposta
 .controls {
   flex: 1; /* Ocupa o espaço restante */
   display: flex;
@@ -323,7 +308,28 @@ main {
 
 .play-btn-circle:hover {
   background: #fff;
-  transform: scale(1.0Sem resposta
+  transform: scale(1.05);
+}
+
+.progress-area {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.custom-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--glass-border);
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
 .fill {
   width: 0%;
   height: 100%;
@@ -412,6 +418,38 @@ main {
     color: #f44336; /* Vermelho para erro */
 }
 
+/* ----- Seção de Solicitação de Música (itunes) ----- */
+.request-section .search-input {
+    width: 100%; max-width: 600px; padding: 18px 25px; border-radius: 35px;
+    border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.1);
+    color: white; outline: none; margin-bottom: 30px; font-size: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Para centralizar com max-width */
+}
+.request-section .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+
+.request-section .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+.request-section .card { /* Reutiliza estilos do .card, mas específico para requests */
+    background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); text-align: center; animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.request-section .card img { width: 100%; border-radius: 15px; margin-bottom: 12px; aspect-ratio: 1/1; object-fit: cover; }
+.request-section .card h3 { font-size: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.request-section .card p { font-size: 11px; color: #888; margin-bottom: 15px; }
+
+.request-section .btn-play { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
+.request-section .btn-request { background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; }
+
+
+#modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10002; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
+.modal-box { background: #0a0f14; padding: 35px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
+.modal-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; text-align: center; font-size: 16px; }
 
 /* ----- Rodapé ----- */
 footer {
@@ -467,7 +505,7 @@ footer {
     gap: 20px;
   }
   /* Header em mobile */
-  header {
+  header { /* Este header foi removido da estrutura, mas mantive o media query por precaução */
     flex-direction: column;
     gap: 10px;
     padding: 10px 20px;
@@ -503,225 +541,4 @@ footer {
   .btn-svg {
     font-size: 20px;
   }
-  .play-btn-circle {
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
-  }
-  .progress-area {
-    font-size: 10px;
-    gap: 8px;
-  }
-  .sidebar {
-      padding: 20px 15px;
-  }
-  .sidebar h2 {
-      font-size: 24px;
-  }
-  .nav-links li {
-      padding: 12px;
-  }
-  main {
-      padding: 70px 10px 100px 10px;
-  }
-  .content-area {
-      padding: 20px;
-  }
-  .content-area h1, .content-area h2 {
-      font-size: 1.5em;
-      margin-bottom: 15px;
-  }
-  .grid {
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 15px;
-  }
-  .card {
-      padding: 10px;
-  }
-  .card h4 {
-      font-size: 12px;
-  }
-  .contact-section {
-      padding: 20px;
-  }
-  .contact-form label,
-  .contact-form input,
-  .contact-form textarea,
-  .contact-form button {
-      font-size: 14px;
-      padding: 10px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- Firebase Core & Auth CDN -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; // Versão atualizada
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-// Sua configuração do Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
-  authDomain: "soundpremiun-6f32c.firebaseapp.com",
-  projectId: "soundpremiun-6f32c",
-  storageBucket: "soundpremiun-6f32c.firebasestorage.app",
-  messagingSenderId: "627077390996",
-  appId: "1:627077390996:web:4daa434fbeddfe10f60a81"
-};
-
-// Inicializa o Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Função para manipular o estado de autenticação
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html"; // Certifique-se de ter um arquivo login.html
-  } else {
-    // Se o usuário estiver logado, carregue o conteúdo inicial (Home)
-    loadContent('home');
-  }
-});
-
-// LOGOUT GLOBAL: Função acessível globalmente para o botão "Sair"
-window.logout = () => {
-  signOut(auth).then(() => {
-    window.location.href = "login.html";
-  }).catch((error) => {
-    console.error("Erro ao fazer logout:", error);
-    alert("Erro ao fazer logout. Tente novamente.");
-  });
-};
-</script>
-
-<!-- Botão de Menu para Mobile -->
-<button class="menu-toggle" onclick="toggleMenu()">
-    <div class="ham-box" id="ham">
-        <div class="ham-line"></div>
-        <div class="ham-line"></div>
-        <div class="ham-line"></div>
-    </div>
-</button>
-
-<!-- Sidebar -->
-<aside class="sidebar" id="side">
-    <h2>SOᑌᘉᗞ</h2>
-    <ul class="nav-links">
-        <li id="nav-home" class="active" onclick="loadContent('home')">🏠 Início</li>
-        <li id="nav-library" onclick="loadContent('library')">📂 Biblioteca</li>
-        <li id="nav-request" onclick="loadContent('request')">✨ Solicitar</li>
-        <li id="nav-contact" onclick="loadContent('contact')">📧 Contato</li>
-    </ul>
-</aside>
-
-<!-- Conteúdo Principal -->
-<main>
-    <div id="content-area" class="content-area">
-        <!-- O conteúdo será carregado aqui dinamicamente -->
-    </div>
-</main>
-
-<!-- Player de Música -->
-<div class="player">
-    <div class="track-info">
-        <img id="cover" src="https://via.placeholder.com/60/111/00d4ff?text=SOᑌᘉᗞ" alt="Capa da Música">
-        <div class="track-text">
-            <h3 id="now">Aguardando...</h3>
-            <p id="status">READY</p>
-        </div>
-    </div>
-
-    <div class="controls">
-        <div class="control-btns">
-            <button class="btn-svg" onclick="prev()">⏮</button>
-            <button class="btn-svg play-btn-circle" onclick="toggle()">▶</button>
-            <button class="btn-svg" onclick="next()">⏭</button>
-        </div>
-
-        <div class="progress-area">
-            <span id="current">0:00</span>
-            <div class="custom-bar" onclick="seek(event)">
-                <div class="fill" id="bar-fill"></div>
-            </div>
-            <span id="duration">0:00</span>
-        </div>
-    </div>
-</div>
-
-<audio id="audio"></audio>
-
-<!-- Botão Sair - Movido para o topo direito para melhor visibilidade e consistência -->
-<button onclick="logout()" class="logout-btn" style="position:fixed;top:20px;right:20px;z-index:99999;">Sair</button>
-
-<!-- Rodapé -->
-<footer>
-    <p>&copy; 2024 SOᑌᘉᗞ | Ultra Premium. Todos os direitos reservados.</p>
-</footer>
-
-<script>
-// --- Menu Toggle para Mobile ---
-function toggleMenu() {
-    document.getElementById('side').classList.toggle('open');
-    document.getElementById('ham').classList.toggle('active');
-}
-
-// --- Conteúdo Dinâmico das Páginas (SPA) ---
-const pageContents = {
-    home: `
-        <section class="content-area">
-            <h1>Vibe do momento</h1>
-            <div id="grid" class="grid"></div>
-        </section>
-    `,
-    library: `
-        <section class="content-area">
-            <h2>Sua Biblioteca</h2>
-            <p>Aqui você pode gerenciar suas músicas favoritas, playlists e downloads.</p>
-            <p>Em breve, mais recursos para organizar sua coleção musical!</p>
-        </section>
-    `,
-    request: `
-        <section class="content-area">
-            <h2>Solicitar Música</h2>
-            <p>Tem uma música em mente que você gostaria de ver na nossa plataforma?</p>
-            <p>Use o formulário de contato para nos enviar suas sugestões ou use o formulário específico de solicitação.</p>
-            <p>Aguarde em breve uma seção dedicada para enviar suas solicitações de novas músicas!</p>
-        </section>
-    `,
-    contact: `
-        <section class="content-area contact-section">
-            <h2>Fale Conosco</h2>
-            <form id="contact-form" class="contact-form">
-                <label for="user_name">Seu Nome:</label>
-                <input type="text" id="user_name" name="user_name" required>
-
-                <label for="user_email">Seu Email:</label>
-                <input type="email" id="user_email" name="user_email" required>
-
-                <label for="message">Mensagem:</label>
-                <textarea id="message" name="message" required></textarea>
-
-                <button type="submit">Enviar Mensagem</button>
-                <p id="form-message" class="form-message"></p>
-            </form>
-        </section>
-    `
-};
-
-function loadContent(pageName) {
-    const contentArea = document.getElementById('content-area');
-    const navLinks = document.querySelectorAll('.nav-links li');
-
-    // Remove a classe 'active' de todos os links e adiciona ao clicado
-    navLinks.forEach(link => link.classList.remove('active'));
-    document.getElementById(`nav-${pageName}`).classList.add('active');
-
-    contentArea.innerHTML = pageContents[pageName];
-
-    // Se for a página Home, renderiza a grid de músicas
-    if (pageName === 'home') {
-        Sem resposta
-
+  .play-btn-Sem resposta
