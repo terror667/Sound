@@ -3,31 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundPremiun - Minha Biblioteca</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: radial-gradient(circle at bottom left, #0d2b3a, var(--bg-dark)); color: white; display: flex; overflow-x: hidden; height: 100vh; }
-        .sidebar { width: 260px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); padding: 40px 25px; border-right: 1px solid rgba(255,255,255,0.05); }
-        .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; }
-        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
-        .main { flex: 1; padding: 40px; padding-bottom: 120px; overflow-y: auto; }
-        .playlist-card { background: var(--card-bg); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.03); }
-        .icon-box { width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), #0055ff); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        :root {
+            --primary-color: #1DB954; /* Spotify green */
+            --secondary-color: #191414; /* Dark black */
+            --text-light: #FFFFFF;
+            --text-dark: #B3B3B3;
+            --button-hover: #1ED760;
+            --bg-gradient-start: #121212;
+            --bg-gradient-end: #000000;
+            --card-bg: #282828;
+            --card-hover-bg: #353535;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background-color: var(--secondary-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header .logo span {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            margin-left: 30px;
+        }
+
+        .nav-menu ul li a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu ul li a:hover, .nav-menu ul li a.active {
+            color: var(--primary-color);
+        }
+
+        .auth-buttons a {
+            background-color: transparent;
+            color: var(--text-light);
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .auth-buttons .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons .signup-btn {
+            background-color: var(--primary-color);
+        }
+
+        .auth-buttons .signup-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .hero-section-small {
+            padding: 60px 40px;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://source.unsplash.com/random/1600x400/?music-library,playlist') no-repeat center center/cover;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-section-small h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-section-small p {
+            font-size: 1.3em;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .library-section {
+            padding: 0 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .library-header h2 {
+            font-size: 2.5em;
+            color: var(--text-light);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .create-playlist-button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-playlist-button:hover {
+            background-color: var(--button-hover);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .playlist-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .playlist-card:hover {
+            background-color: var(--card-hover-bg);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .playlist-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .playlist-card h3 {
+            font-size: 1.3em;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-card p {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-card .view-button {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        .playlist-card:hover .view-button {
+            opacity: 1;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-size: 0.9em;
+        }
+
+        .footer .social-links a {
+            color: var(--text-dark);
+            font-size: 1.5em;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer p {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-<aside class="sidebar">
-    <h2 style="text-align:center; margin-bottom:30px; color:var(--primary);">SOᑌᘉᗞ</h2>
-    <ul class="nav-links">
-        <li onclick="location.href='pagina1.html'">🏠 Início</li>
-        <li class="active" onclick="location.href='pagina2.html'">📂 Biblioteca</li>
-        <li onclick="location.href='solicitacoes.html'">🔍 Solicitar</li>
-    </ul>
-</aside>
-<main class="main">
-    <h1>Sua Biblioteca</h1>
-    <div class="playlist-card"><div class="icon-box">🎧</div><div><h4>Mix Diário</h4><span>Para você</span></div></div>
-    <div class="playlist-card"><div class="icon-box">✨</div><div><h4>Favoritos</h4><span>Músicas curtidas</span></div></div>
-</main>
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="SoundPremiun Logo">
+            <span>SoundPremiun</span>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="pagina1.html">Músicas</a></li>
+                <li><a href="pagina2.html" class="active">Biblioteca</a></li>
+                <li><a href="solicitacoes.html">Solicitações</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <!-- These links will be dynamically updated by JavaScript based on auth state -->
+            <a href="login.html" class="login-btn" id="headerLoginBtn">Entrar</a>
+            <a href="register.html" class="signup-btn" id="headerRegisterBtn">Registrar</a>
+            <a href="#" class="signup-btn" id="headerLogoutBtn" style="display: none;">Sair</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section-small">
+            <h1>Sua Coleção de Músicas</h1>
+            <p>Organize, crie e ouça suas playlists favoritas.</p>
+        </section>
+
+        <section class="library-section">
+            <div class="library-header">
+                <h2>Minhas Playlists</h2>
+                <button class="create-playlist-button" id="createPlaylistButton">
+                    <i class="fas fa-plus-circle"></i> Nova Playlist
+                </button>
+            </div>
+            <div class="playlists-grid" id="playlistsGrid">
+                <!-- Playlists will be loaded here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2026 SoundPremiun. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+        // import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
+            authDomain: "soundpremiun-6f32c.firebaseapp.com",
+            projectId: "soundpremiun-6f32c",
+            storageBucket: "soundpremiun-6f32c.firebasestorage.app",
+            messagingSenderId: "627077390996",
+            appId: "1:627077390996:web:4daa434fbeddfe10f60a81"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        // const storage = getStorage(app); // Uncomment if you store playlist cover images in Storage
+
+        const playlistsGrid = document.getElementById('playlistsGrid');
+        const createPlaylistButton = document.getElementById('createPlaylistButton');
+        const headerLoginBtn = document.getElementById('headerLoginBtn');
+        const headerRegisterBtn = document.getElementById('headerRegisterBtn');
+        const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+
+        let currentUser = null;
+
+        // Auth state listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                // User is signed in
+                headerLoginBtn.style.display = 'none';
+                headerRegisterBtn.style.display = 'none';
+                headerLogoutBtn.style.display = 'inline-block';
+                loadUserPlaylists(currentUser.uid);
+            } else {
+                // User is signed out
+                currentUser = null;
+                headerLoginBtn.style.display = 'inline-block';
+                headerRegisterBtn.style.display = 'inline-block';
+                headerLogoutBtn.style.display = 'none';
+                // Redirect to login page if not authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Logout functionality
+        headerLogoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirect to login page after logout
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                alert('Erro ao sair. Tente novamente.');
+            }
+        });
+
+        // Function to load playlistsSem resposta
+                        <button class="view-button" data-id="${playlistId}">Ver Playlist</button>
+                    `;
+                    playlistsGrid.appendChild(playlistCard);
+
+                    // Add event listener to view playlist (example - could open a modal or new page)
+                    playlistCard.querySelector('.view-button').addEventListener('click', () => {
+                        alert(`Visualizar playlist: ${playlist.name} (ID: ${playlistId})`);
+                        // In a real app, you would navigate to a detailed playlist page,
+                        // e.g., window.location.href = `playlist.html?id=${playlistId}`;
+                    });
+                });
+            } catch (error) {
+                console.error("Erro ao carregar playlists:", error);
+                playlistsGrid.innerHTML = '<p style="text-align: center; color: var(--error-color);">Erro ao carregar suas playlists.</p>';
+            }
+        }
+
+        // Handle Create Playlist button click
+        createPlaylistButton.addEventListener('click', async () => {
+            if (!currentUser) {
+                alert('Você precisa estar logado para criar uma playlist.');
+                return;
+            }
+            const playlistName = prompt('Digite o nome da nova playlist:');
+            if (playlistName && playlistName.trim() !== '') {
+                try {
+                    await addDoc(collection(db, "playlists"), {
+                        name: playlistName.trim(),
+                        userId: currentUser.uid,
+                        createdAt: new Date(),
+                        songCount: 0,
+                        coverImage: '', // Optional: Add a default cover or allow user to upload
+                        songs: [] // Array to store song references (e.g., song IDs)
+                    });
+                    alert(`Playlist "${playlistName}" criada com sucesso!`);
+                    loadUserPlaylists(currentUser.uid); // Reload playlists
+                } catch (error) {
+                    console.error("Erro ao criar playlist:", error);
+                    alert('Erro ao criar playlist. Tente novamente.');
+                }
+            } else if (playlistName !== null) { // User clicked cancel or entered empty string
+                alert('Nome da playlist não pode ser vazio.');
+            }
+        });
+
+        // Initial check for authentication state and load content
+        // This is handled by onAuthStateChanged listener above
+    </script>
 </body>
 </html>
+
