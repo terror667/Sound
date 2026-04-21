@@ -2,217 +2,827 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SOᑌᘉᗞ | Solicitar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundPremiun - Solicitações de Músicas</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d4ff; --bg-dark: #050a10; --card-bg: rgba(255, 255, 255, 0.05); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: radial-gradient(circle at bottom right, #0d2b3a, var(--bg-dark)); 
-            color: white; 
-            display: flex; 
-            min-height: 100vh; 
-            overflow-x: hidden; 
+        :root {
+            --primary-color: #1DB954; /* Spotify green */
+            --secondary-color: #191414; /* Dark black */
+            --text-light: #FFFFFF;
+            --text-dark: #B3B3B3;
+            --button-hover: #1ED760;
+            --bg-gradient-start: #121212;
+            --bg-gradient-end: #000000;
+            --card-bg: #282828;
+            --card-hover-bg: #353535;
+            --input-bg: #282828;
+            --input-border: #404040;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --info-color: #5BC0DE;
+            --success-color: #5CB85C;
+            --error-color: #D9534F;
         }
 
-        /* SIDEBAR */
-        .sidebar { 
-            width: 260px; background: rgba(0,0,0,0.9); backdrop-filter: blur(25px); 
-            padding: 40px 25px; border-right: 1px solid rgba(255, 255, 255, 0.1); 
-            height: 100vh; position: sticky; top: 0; z-index: 100; flex-shrink: 0;
-            transition: 0.4s ease;
-        }
-        .logo { font-size: 26px; font-weight: 800; margin-bottom: 40px; text-align: center; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links li { list-style: none; padding: 15px; border-radius: 12px; cursor: pointer; color: #94a3b8; margin-bottom: 5px; transition: 0.3s; }
-        .nav-links li.active { background: var(--card-bg); color: var(--primary); }
-        .nav-links li:hover { color: #fff; }
-
-        /* MENU MOBILE */
-        .menu-toggle { 
-            display: none; position: fixed; top: 15px; left: 15px; z-index: 10001; 
-            background: var(--primary); border: none; width: 45px; height: 45px; border-radius: 12px; 
-            cursor: pointer; font-size: 20px; color: black; box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .main { flex: 1; padding: 40px; padding-bottom: 150px; min-height: 100vh; }
-        
-        .search-input { 
-            width: 100%; max-width: 600px; padding: 18px 25px; border-radius: 35px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.1); 
-            color: white; outline: none; margin-bottom: 30px; font-size: 16px;
+        .header {
+            background-color: var(--secondary-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
         }
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
 
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); text-align: center; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
 
-        .card img { width: 100%; border-radius: 15px; margin-bottom: 12px; aspect-ratio: 1/1; object-fit: cover; }
-        .card h3 { font-size: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card p { font-size: 11px; color: #888; margin-bottom: 15px; }
+        .header .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
 
-        .btn-play { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
-        .btn-request { background: var(--primary); color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; }
+        .header .logo span {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
 
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10002; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-box { background: #0a0f14; padding: 35px; border-radius: 30px; border: 1px solid var(--primary); width: 90%; max-width: 400px; text-align: center; }
-        .modal-box input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; text-align: center; font-size: 16px; }
+        .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
-        @media (max-width: 850px) {
-            .menu-toggle { display: block; }
-            .sidebar { position: fixed; left: -260px; }
-            .sidebar.open { left: 0; }
-            .main { padding: 80px 15px 150px 15px; }
-            .results-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .nav-menu ul li {
+            margin-left: 30px;
+        }
+
+        .nav-menu ul li a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu ul li a:hover, .nav-menu ul li a.active {
+            color: var(--primary-color);
+        }
+
+        .auth-buttons a {
+            background-color: transparent;
+            color: var(--text-light);
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .auth-buttons .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons .signup-btn {
+            background-color: var(--primary-color);
+        }
+
+        .auth-buttons .signup-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .hero-section-small {
+            padding: 60px 40px;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://source.unsplash.com/random/1600x400/?music-request,api') no-repeat center center/cover;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-section-small h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-section-small p {
+            font-size: 1.3em;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .request-section {
+            padding: 0 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .search-bar-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-bar-container input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            font-size: 1.1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar-container input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.3);
+            outline: none;
+        }
+
+        .search-bar-container button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-bar-container button:hover {
+            background-color: var(--button-hover);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .song-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .song-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .song-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .song-card h3 {
+            font-size: 1.4em;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-card p {
+            font-size: 1em;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-card .actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .song-card .actions button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .song-card .actions button.preview-button {
+            background-color: var(--info-color);
+        }
+
+        .song-card .actions button.preview-button:hover {
+            background-color: #4AB2D6;
+            transform: translateY(-2px);
+        }
+
+        .song-card .actions button.request-button {
+            background-color: var(--primary-color);
+        }
+
+        .song-card .actions button.request-button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        .message-area {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.2em;
+            color: var(--text-dark);
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message-area.hidden {
+            display: none;
+        }
+
+        .player-preview-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-color);
+            padding: 15px 40px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+            display: none; /* Hidden by default */
+        }
+
+        .player-preview-container.active {
+            display: flex;
+        }
+
+        .current-preview-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .current-preview-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .current-preview-info div {
+            flex-grow: 1;
+        }
+
+        .current-preview-info h4 {
+            margin: 0;
+            font-size: 1em;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .current-preview-info p {
+            margin: 0;
+            font-size: 0.8em;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-preview-controls {
+            display: flex;
+            align-items: center;
+            flex-grow: 2;
+            justify-content: center;
+        }
+
+        .player-preview-controls button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5em;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .player-preview-controls button:hover {
+            color: var(--primary-color);
+        }
+
+        .preview-progress-bar-container {
+            width: 60%;
+            height: 5px;
+            background-color: var(--input-border);
+            border-radius: 5px;
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+        .preview-progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .preview-time-display {
+            font-size: 0.8em;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            .nav-menu ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            .auth-buttons {
+                margin-top: 15px;
+            }
+            .hero-section-small {Sem resposta
+            .preview-progress-bar-container {
+                width: 90%;
+            }
+            .volume-control {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
         }
     </style>
+    <!-- EmailJS SDK - Adicionar seu próprio script de configuração -->
+    <!-- Para usar o EmailJS, você precisará configurar um serviço, template e obter seu User ID -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function() {
+          emailjs.init("YOUR_EMAILJS_USER_ID"); // Substitua com seu User ID do EmailJS
+       })();
+    </script>
 </head>
 <body>
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="SoundPremiun Logo">
+            <span>SoundPremiun</span>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="pagina1.html">Músicas</a></li>
+                <li><a href="pagina2.html">Biblioteca</a></li>
+                <li><a href="solicitacoes.html" class="active">Solicitações</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="login-btn" id="headerLoginBtn">Entrar</a>
+            <a href="register.html" class="signup-btn" id="headerRegisterBtn">Registrar</a>
+            <a href="#" class="signup-btn" id="headerLogoutBtn" style="display: none;">Sair</a>
+        </div>
+    </header>
 
-<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <main>
+        <section class="hero-section-small">
+            <h1>Solicite sua Música Favorita</h1>
+            <p>Não encontrou? Busque no iTunes e nos envie sua sugestão para adicionarmos à nossa coleção!</p>
+        </section>
 
-<aside class="sidebar" id="side">
-    <div class="logo">SOᑌᘉᗞ</div>
-    <ul class="nav-links">
-        <li onclick="window.parent.location.href='index.html'">🏠 Início</li>
-        <li onclick="location.href='pagina2.html'">📂 Biblioteca</li>
-        <li class="active">🔍 Solicitar</li>
-    </ul>
-</aside>
+        <section class="request-section">
+            <div class="search-bar-container">
+                <input type="text" id="searchInput" placeholder="Pesquisar música ou artista no iTunes..." aria-label="Pesquisar música">
+                <button id="searchButton"><i class="fas fa-search"></i> Pesquisar</button>
+            </div>
 
-<main class="main">
-    <h1 style="font-weight: 800; margin-bottom: 10px;">Buscar Música</h1>
-    <p style="color: #94a3b8; margin-bottom: 25px; font-size: 14px;">Ouça o preview e peça para a <b>SOᑌᘉᗞ</b> adicionar.</p>
-    
-    <input type="text" id="pesquisa" class="search-input" placeholder="O que você quer ouvir?" oninput="buscar()">
-    
-    <div id="lista" class="results-grid"></div>
-</main>
+            <div class="message-area" id="messageArea">
+                Comece pesquisando por uma música ou artista!
+            </div>
 
-<div id="modal">
-    <div class="modal-box">
-        <h2 style="color: var(--primary); font-size: 18px;">Solicitar Música</h2>
-        <h3 id="nomeMusica" style="margin-top: 15px; font-size: 15px; color: #eee; font-style: italic;"></h3>
-        <input type="email" id="email" placeholder="Seu e-mail para aviso">
-        <button id="sendBtn" class="btn-request" onclick="enviar()">Confirmar Pedido</button>
-        <button onclick="fechar()" style="background:none; border:none; color:#555; margin-top:20px; cursor:pointer; font-weight:800; font-size: 12px;">CANCELAR</button>
+            <div class="search-results-grid" id="searchResultsGrid">
+                <!-- iTunes API results will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <div class="player-preview-container" id="previewPlayerContainer">
+        <audio id="previewAudioPlayer" style="display: none;"></audio>
+        <div class="current-preview-info">
+            <img src="imagens/placeholder.png" alt="Capa do Álbum" id="previewAlbumArt">
+            <div>
+                <h4 id="previewSongTitle">Nenhuma prévia tocando</h4>
+                <p id="previewArtist">Artista Desconhecido</p>
+            </div>
+        </div>
+        <div class="player-preview-controls">
+            <button id="playPausePreviewButton"><i class="fas fa-play"></i></button>
+            <span class="preview-time-display" id="currentPreviewTime">0:00</span>
+            <div class="preview-progress-bar-container">
+                <div class="preview-progress-bar" id="previewProgressBar"></div>
+            </div>
+            <span class="preview-time-display" id="totalPreviewDuration">0:30</span>
+            <button id="stopPreviewButton"><i class="fas fa-stop"></i></button>
+        </div>
     </div>
-</div>
 
-<script>
-// Inicialização correta
-(function(){ 
-    emailjs.init("Z1mNDpBSBEuhfpaF"); 
-})();
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2026 SoundPremiun. Todos os direitos reservados.</p>
+    </footer>
 
-let previewAudio = null; // Áudio invisível controlado por script
-let musicaAtual = "";
-let debounceTimer = null;
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-function toggleMenu() { document.getElementById('side').classList.toggle('open'); }
+    <!-- Firebase SDK e Lógica JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+        // Import Firestore if you want to store requests in a database
+        // import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-async function buscar(){
-    const valor = document.getElementById("pesquisa").value;
-    const lista = document.getElementById("lista");
-    
-    if(valor.length < 3) {
-        lista.innerHTML = "";
-        return;
-    }
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
+            authDomain: "soundpremiun-6f32c.firebaseapp.com",
+            projectId: "soundpremiun-6f32c",
+            storageBucket: "soundpremiun-6f32c.firebasestorage.app",
+            messagingSenderId: "627077390996",
+            appId: "1:627077390996:web:4daa434fbeddfe10f60a81"
+        };
 
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(async () => {
-        try {
-            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(valor)}&media=music&limit=16&entity=song`);
-            const data = await res.json();
-            lista.innerHTML = "";
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // const db = getFirestore(app); // Initialize Firestore if you use it for requests
 
-            if(data.results.length === 0) {
-                lista.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:#444; margin-top: 20px;'>Nenhum resultado encontrado.</p>";
+        // Elementos da UI
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const messageArea = document.getElementById('messageArea');
+        const searchResultsGrid = document.getElementById('searchResultsGrid');
+
+        const previewAudioPlayer = document.getElementById('previewAudioPlayer');
+        const previewPlayerContainer = document.getElementById('previewPlayerContainer');
+        const playPausePreviewButton = document.getElementById('playPausePreviewButton');
+        const stopPreviewButton = document.getElementById('stopPreviewButton');
+        const previewAlbumArt = document.getElementById('previewAlbumArt');
+        const previewSongTitle = document.getElementById('previewSongTitle');
+        const previewArtist = document.getElementById('previewArtist');
+        const currentPreviewTime = document.getElementById('currentPreviewTime');
+        const totalPreviewDuration = document.getElementById('totalPreviewDuration');
+        const previewProgressBar = document.getElementById('previewProgressBar');
+        const previewProgressBarContainer = document.querySelector('.preview-progress-bar-container');
+
+        const headerLoginBtn = document.getElementById('headerLoginBtn');
+        const headerRegisterBtn = document.getElementById('headerRegisterBtn');
+        const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+
+        let currentUser = null;
+        let currentPlayingPreview = null; // Store the currently playing preview track
+
+        // --- Funções Auxiliares ---
+        function showMessage(msg, type = 'info') {
+            messageArea.textContent = msg;
+            messageArea.className = 'message-area'; // Reset classes
+            if (type === 'error') {
+                messageArea.style.color = 'var(--error-color)';
+            } else if (type === 'success') {
+                messageArea.style.color = 'var(--success-color)';
+            } else {
+                messageArea.style.color = 'var(--info-color)';
+            }
+            messageArea.classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            messageArea.classList.add('hidden');
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        // --- Autenticação Firebase ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                headerLoginBtn.style.display = 'none';
+                headerRegisterBtn.style.display = 'none';
+                headerLogoutBtn.style.display = 'inline-block';
+            } else {
+                currentUser = null;
+                headerLoginBtn.style.display = 'inline-block';
+                headerRegisterBtn.style.display = 'inline-block';
+                headerLogoutBtn.style.display = 'none';
+            }
+        });
+
+        headerLogoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                alert('Erro ao sair. Tente novamente.');
+            }
+        });
+
+        // --- Integração com iTunes API ---
+        async function searchItunes(term) {
+            if (!term) {
+                showMessage('Por favor, digite um termo para pesquisa.', 'info');
+                return;
+            }
+            showMessage('Pesquisando...', 'info');
+            searchResultsGrid.innerHTML = ''; // Clear previous results
+            previewPlayerContainer.classList.remove('active'); // Hide player
+
+            try {
+                // Using a proxy to bypass CORS restrictions.
+                // In a production environment, you should set up your own backend proxy.
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=20`)}`;
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                if (data.results.length === 0) {
+                    showMessage(`Nenhum resultado encontrado para "${term}".`, 'info');
+                    return;
+                }
+
+                hideMessage(); // Hide "Pesquisando..."
+                data.results.forEach(track => {
+                    if (track.previewUrl) { // Only show tracks with a 30-second preview
+                        const songCard = document.createElement('div');
+                        songCard.classList.add('song-card');
+                        songCard.innerHTML = `
+                            <img src="${track.artworkUrl100.replace('100x100bb.jpg', '200x200bb.jpg')}" alt="${track.trackName}">
+                            <h3>${track.trackName}</h3>
+                            <p>${track.artistName} - ${track.collectionName || 'Single'}</p>
+                            <div class="actions">
+                                <button class="preview-button" data-preview-url="${track.previewUrl}"
+                                        data-title="${track.trackName}"
+                                        data-artist="${track.artistName}"
+                                        data-album-art="${track.artworkUrl100.replace('100x100bb.jpg', '200x200bb.jpg')}">
+                                    <i class="fas fa-play-circle"></i> Prévia
+                                </button>
+                                <button class="request-button"
+                                        data-title="${track.trackName}"
+                                        data-artist="${track.artistName}"
+                                        data-collection="${track.collectionName || ''}"
+                                        data-track-id="${track.trackId}"
+                                        data-artwork="${track.artworkUrl100.replace('100x100bb.jpg', '200x200bb.jpg')}"
+                                        data-preview-url="${track.previewUrl}">
+                                    <i class="fas fa-paper-plane"></i> Solicitar
+                                </button>
+                            </div>
+                        `;
+                        searchResultsGrid.appendChild(songCard);
+                    }
+                });
+
+                // Add event listeners for preview buttons
+                document.querySelectorAll('.preview-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const url = e.currentTarget.dataset.previewUrl;
+                        const title = e.currentTarget.dataset.title;
+                        const artist = e.currentTarget.dataset.artist;
+                        const albumArt = e.currentTarget.dataset.albumArt;
+                        playPreview(url, title, artist, albumArt);
+                    });
+                });
+
+                // Add event listeners for request buttons
+                document.querySelectorAll('.request-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        if (!currentUser) {
+                            alert('Você precisa estar logado para solicitar uma música!');
+                            return;
+                        }
+                        const trackInfo = e.currentTarget.dataset;
+                        sendSongRequest(trackInfo);
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error searching iTunes:', error);
+                showMessage('Erro ao pesquisar músicas. Tente novamente mais tarde.', 'error');
+            }
+        }
+
+        // --- Controles do Player de Prévia ---
+        function playPreview(url, title, artist, albumArt) {
+            if (currentPlayingPreview === url) {
+                // If the same song is clicked again, just toggle play/pause
+                if (previewAudioPlayer.paused) {
+                    previewAudioPlayer.play();
+                    playPausePreviewButton.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    previewAudioPlayer.pause();
+                    playPausePreviewButton.innerHTML = '<i class="fas fa-play"></i>';
+                }
                 return;
             }
 
-            data.results.forEach(m => {
-                const card = document.createElement("div");
-                card.className = "card";
-                const cleanName = m.trackName.replace(/'/g, "").replace(/"/g, "");
-                const cleanArtist = m.artistName.replace(/'/g, "").replace(/"/g, "");
-                const identificador = `${cleanName} - ${cleanArtist}`;
+            if (!url) {
+                showMessage('URL de prévia não disponível.', 'error');
+                return;
+            }
 
-                card.innerHTML = `
-                    <img src="${m.artworkUrl100.replace('100x100', '400x400')}" loading="lazy">
-                    <h3>${m.trackName}</h3>
-                    <p>${m.artistName}</p>
-                    <button class="btn-play" onclick="play('${m.previewUrl}')">▶️ OUVIR PREVIEW</button>
-                    <button class="btn-request" onclick="abrir('${identificador}')">SOLICITAR</button>
-                `;
-                lista.appendChild(card);
-            });
-        } catch (e) { 
-            console.error("Erro na busca:", e);
+            // Stop any currently playing preview
+            if (!previewAudioPlayer.paused) {
+                previewAudioPlayer.pause();
+            }
+
+            previewAudioPlayer.src = url;
+            previewAlbumArt.src = albumArt;
+            previewSongTitle.textContent = title;
+            previewArtist.textContent = artist;
+            currentPlayingPreview = url;
+
+            previewAudioPlayer.play();
+            playPausePreviewButton.innerHTML = '<i class="fas fa-pause"></i>';
+            previewPlayerContainer.classList.add('active');
         }
-    }, 500); 
-}
 
-// Função de áudio sem elementos visuais no HTML
-function play(url){
-    if(previewAudio) {
-        previewAudio.pause();
-    }
-    previewAudio = new Audio(url);
-    previewAudio.play().catch(e => console.log("Erro ao tocar:", e));
-}
+        playPausePreviewButton.addEventListener('click', () => {
+            if (previewAudioPlayer.paused) {
+                previewAudioPlayer.play();
+                playPausePreviewButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                previewAudioPlayer.pause();
+                playPausePreviewButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
 
-function abrir(nome){
-    musicaAtual = nome;
-    document.getElementById("nomeMusica").innerText = nome;
-    document.getElementById("modal").style.display = "flex";
-}
+        stopPreviewButton.addEventListener('click', () => {
+            previewAudioPlayer.pause();
+            previewAudioPlayer.currentTime = 0;
+            previewPlayerContainer.classList.remove('active');
+            playPausePreviewButton.innerHTML = '<i class="fas fa-play"></i>';
+            currentPlayingPreview = null;
+        });
 
-function fechar(){ document.getElementById("modal").style.display = "none"; }
+        previewAudioPlayer.addEventListener('timeupdate', () => {
+            const progress = (previewAudioPlayer.currentTime / previewAudioPlayer.duration) * 100;
+            previewProgressBar.style.width = `${progress}%`;
+            currentPreviewTime.textContent = formatTime(previewAudioPlayer.currentTime);
+        });
 
-function enviar(){
-    const emailValue = document.getElementById("email").value;
-    const btn = document.getElementById("sendBtn");
-    
-    if(!emailValue.includes("@") || emailValue.length < 5) {
-        return alert("Por favor, insira um e-mail válido.");
-    }
+        previewAudioPlayer.addEventListener('loadedmetadata', () => {
+            // iTunes previews are typically 30 seconds
+            totalPreviewDuration.textContent = '0:30';
+        });
 
-    btn.innerText = "ENVIANDO...";
-    btn.disabled = true;
+        previewAudioPlayer.addEventListener('ended', ()Sem resposta
+             /*
+                await addDoc(collection(db, "songRequests"), {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    songTitle: trackInfo.title,
+                    artistName: trackInfo.artist,
+                    collectionName: trackInfo.collection,
+                    trackId: trackInfo.trackId,
+                    artworkUrl: trackInfo.artwork,
+                    previewUrl: trackInfo.previewUrl,
+                    timestamp: serverTimestamp() // Use serverTimestamp for consistent timestamps
+                });
+                */
 
-    // USANDO 'item' PARA EVITAR ACENTOS NO EMAILJS
-    const templateParams = {
-        item: musicaAtual, 
-        email: emailValue
-    };
+                showMessage('Sua solicitação foi enviada com sucesso! Agradecemos sua contribuição.', 'success');
+            } catch (error) {
+                console.error("Erro ao enviar solicitação:", error);
+                showMessage('Ocorreu um erro ao enviar sua solicitação. Tente novamente.', 'error');
+            }
+        }
 
-    emailjs.send("service_k5ft1lw", "template_bti0wvb", templateParams)
-    .then(() => {
-        alert("Pedido enviado com sucesso! 🚀");
-        fechar();
-        btn.innerText = "Confirmar Pedido";
-        btn.disabled = false;
-        document.getElementById("email").value = "";
-    })
-    .catch((err) => {
-        alert("Erro no envio. Verifique se mudou para {{item}} no painel.");
-        btn.innerText = "Confirmar Pedido";
-        btn.disabled = false;
-    });
-}
+        // --- Event Listeners ---
+        searchButton.addEventListener('click', () => {
+            searchItunes(searchInput.value);
+        });
 
-document.addEventListener('click', function(e) {
-    const sidebar = document.getElementById('side');
-    const btn = document.querySelector('.menu-toggle');
-    if (window.innerWidth <= 850 && !sidebar.contains(e.target) && !btn.contains(e.target)) {
-        sidebar.classList.remove('open');
-    }
-});
-</script>
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchItunes(searchInput.value);
+            }
+        });
+
+        // Initialize EmailJS with your Public Key
+        (function() {
+            emailjs.init("Z1mNDpBSBEuhfpaF_"); // Sua Chave Pública do EmailJS
+        })();
+
+        async function sendSongRequest(trackInfo) {
+            // Show a loading message
+            showMessage('Enviando solicitação...', 'info');
+
+            // Format the song information into a single "item" string for the EmailJS template
+            const songItem = `
+                Título: ${trackInfo.title}
+                Artista: ${trackInfo.artist}
+                Álbum/Coleção: ${trackInfo.collection || 'N/A'}
+                ID da Faixa (iTunes): ${trackInfo.trackId}
+                URL da Arte: ${trackInfo.artwork}
+                URL da Prévia: ${trackInfo.previewUrl}
+            `;
+
+            // 1. Send email via EmailJS
+            try {
+                const templateParams = {
+                    user_email: currentUser.email, // User's email from Firebase Auth
+                    item: songItem, // This matches your EmailJS template variable {{item}}
+                    request_date: new Date().toLocaleString()
+                };
+
+                // Substitua 'YOUR_SERVICE_ID' e 'YOUR_TEMPLATE_ID' pelos seus IDs do EmailJS
+                await emailjs.send('service_k5ft1lw', 'template_bti0wvb', templateParams); // Seus IDs de Serviço e Modelo do EmailJS
+
+                // 2. (Optional) Store request in Firestore
+                /*
+                // Uncomment the Firestore imports and `db` initialization at the top
+                // of this script if you want to use this part.
+                await addDoc(collection(db, "songRequests"), {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    songTitle: trackInfo.title,
+                    artistName: trackInfo.artist,
+                    collectionName: trackInfo.collection,
+                    trackId: trackInfo.trackId,
+                    artworkUrl: trackInfo.artwork,
+                    previewUrl: trackInfo.previewUrl,
+                    timestamp: serverTimestamp() // Use serverTimestamp for consistent timestamps
+                });
+                */
+
+                showMessage('Sua solicitação foi enviada com sucesso! Agradecemos sua contribuição.', 'success');
+            } catch (error) {
+                console.error("Erro ao enviar solicitação:", error);
+                showMessage('Ocorreu um erro ao enviar sua solicitação. Tente novamente.', 'error');
+            }
+        }
+
+        // Initial message on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showMessage('Comece pesquisando por uma música ou artista!', 'info');
+        });
+    </script>
 </body>
 </html>
