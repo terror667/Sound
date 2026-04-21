@@ -1,111 +1,294 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Criar Conta - SOᑌᘉᗞ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundPremiun - Criar Conta</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1DB954; /* Spotify green */
+            --secondary-color: #191414; /* Dark black */
+            --text-light: #FFFFFF;
+            --text-dark: #B3B3B3;
+            --input-bg: #282828;
+            --input-border: #404040;
+            --button-hover: #1ED760;
+            --bg-gradient-start: #121212;
+            --bg-gradient-end: #000000;
+            --error-color: #FF4D4D;
+            --success-color: #4CAF50;
+        }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: radial-gradient(circle at top, #001f2a, #050a10);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-light);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-.box {
-  background: rgba(15,25,35,0.9);
-  padding: 50px 40px;
-  border-radius: 30px;
-  width: 340px;
-  text-align: center;
-  box-shadow: 0 0 60px rgba(0,212,255,0.25);
-}
+        .register-container {
+            background-color: var(--secondary-color);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 480px; /* Slightly wider for more fields */
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+        }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 14px;
-  border: none;
-  background: #0f1f2a;
-  color: white;
-}
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFD54F, #1DB954, #2196F3, #FF6F00); /* Different gradient colors for distinction */
+            background-size: 400% 400%;
+            animation: gradientBorder 15s ease infinite;
+            z-index: -1;
+            border-radius: 22px;
+            filter: blur(8px);
+            opacity: 0.3;
+        }
 
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border-radius: 14px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-.create { background: linear-gradient(135deg, #00d4ff, #00ffa6); color: black; }
-.google { background: white; color: black; }
+        .register-container .logo {
+            margin-bottom: 30px;
+        }
 
-.link {
-  margin-top: 15px;
-  display: block;
-  color: #00d4ff;
-  cursor: pointer;
-}
-</style>
+        .register-container .logo img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .register-container .logo h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .register-container h3 {
+            font-size: 1.8em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: calc(100% - 24px); /* Account for padding */
+            padding: 14px 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.3);
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-dark);
+            opacity: 0.7;
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .register-button:hover {
+            background-color: var(--button-hover);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .links-section {
+            margin-top: 30px;
+            font-size: 0.95em;
+        }
+
+        .links-section a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .links-section a:hover {
+            color: var(--button-hover);
+            text-decoration: underline;
+        }
+
+        .message-box {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+        }
+
+        .message-box.error {
+            background-color: rgba(255, 77, 77, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .message-box.success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+    </style>
 </head>
-
 <body>
+    <div class="register-container">
+        <div class="logo">
+            <img src="logo.png" alt="SoundPremiun Logo">
+            <h2>SoundPremiun</h2>
+        </div>
+        <h3>Crie sua conta</h3>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Mínimo de 6 caracteres" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+            </div>
+            <button type="submit" class="register-button">Registrar</button>
+            <p class="message-box" id="messageBox"></p>
+        </form>
+        <div class="links-section">
+            <a href="login.html">Já tem uma conta? Faça login</a>
+        </div>
+    </div>
 
-<div class="box">
-  <h1>Criar conta</h1>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
-  <input id="email" placeholder="Email">
-  <input id="senha" type="password" placeholder="Senha">
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
+            authDomain: "soundpremiun-6f32c.firebaseapp.com",
+            projectId: "soundpremiun-6f32c",
+            storageBucket: "soundpremiun-6f32c.firebasestorage.app",
+            messagingSenderId: "627077390996",
+            appId: "1:627077390996:web:4daa434fbeddfe10f60a81"
+        };
 
-  <button class="create" onclick="register()">Criar conta</button>
-  <button class="google" onclick="loginGoogle()">Criar com Google</button>
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-  <span class="link" onclick="back()">Já tenho conta</span>
-</div>
+        // Get form elements
+        const registerForm = document.getElementById('registerForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const messageBox = document.getElementById('messageBox');
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
-from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+        // Handle registration form submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCYxvghCciuFie4Z8qG0JsELoqMaZuXcoo",
-  authDomain: "soundpremiun-6f32c.firebaseapp.com",
-  projectId: "soundpremiun-6f32c"
-};
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+            messageBox.style.display = 'none'; // Hide any previous messages
+            messageBox.classList.remove('error', 'success'); // Clear previous states
 
-// EMAIL REGISTER
-window.register = () => {
-  createUserWithEmailAndPassword(auth, email.value, senha.value)
-    .then(() => window.location.href = "index.html")
-    .catch(e => alert(e.message));
-};
+            if (password !== confirmPassword) {
+                showMessage('As senhas não coincidem.', 'error');
+                return;
+            }
 
-// GOOGLE
-const provider = new GoogleAuthProvider();
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                console.log('User registered:', user);
+                showMessage('Conta criada com sucesso! Redirecionando para a página de login...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html'; // Redirect to login after successful registration
+                }, 3000); // Redirect after 3 seconds
+            } catch (error) {
+                console.error('Registration error:', error.code, error.message);
+                let message = 'Erro ao criar conta. Tente novamente.';
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        message = 'Este email já está em uso.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'O formato do email é inválido.';
+                        break;
+                    case 'auth/weak-password':
+                        message = 'A senha deve ter pelo menos 6 caracteres.';
+                        break;
+                    default:
+                        message = 'Ocorreu um erro inesperado. Tente novamente.';
+                }
+                showMessage(message, 'error');
+            }
+        });
 
-window.loginGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then(() => window.location.href = "index.html")
-    .catch(e => alert(e.message));
-};
-
-window.back = () => {
-  window.location.href = "login.html";
-};
-</script>
-
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.classList.add(type);
+            messageBox.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
+
